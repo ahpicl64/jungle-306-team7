@@ -66,5 +66,4 @@ def signIn():
 
 if __name__ == '__main__':
     print(sys.executable)
-    # TODO: 5000으로 변경하여 push!!
     app.run('0.0.0.0', port=5001, debug=True)
