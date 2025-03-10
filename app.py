@@ -54,6 +54,17 @@ app.json = CustomJSONProvider(app)
 def home():
     return render_template('index.html')
 
+# 회원가입 페이지로 이동하는 함수
+@app.route('/signup')
+def signUp():
+    return render_template('sign_up.html')
+
+# 로그인 페이지로 이동하는 함수
+@app.route('/signin')
+def signIn():
+    return render_template('sign_in.html')
+
 if __name__ == '__main__':
     print(sys.executable)
-    app.run('0.0.0.0', port=5000, debug=True)
+    # TODO: 5000으로 변경하여 push!!
+    app.run('0.0.0.0', port=5001, debug=True)
