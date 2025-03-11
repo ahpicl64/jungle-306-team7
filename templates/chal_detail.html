@@ -25,7 +25,10 @@
 
 
 
-    <title>커피챌 | 챌린지 세부사항</title>
+    <title>커피챌 | 챌린지 세부사항 | {challenge.name}</title>
+    <script>
+
+    </script>
 </head>
 
 <body>
@@ -45,13 +48,13 @@
             <!-- 기간 -->
             <div class="flex flex-row justify-between">
                 <p>기간</p>
-                <p>2025년 3월 10일 ~ 2025년 3월 16일</p>
+                <p><span>{{challenge.start_date}}</span> ~ {{challenge.end_date}}</p>
             </div>
 
             <!-- 작성자 -->
             <div class="flex flex-row justify-between">
                 <p>주최자</p>
-                <p>임재홍</p>
+                <p>{{challenge.host_user_id}}</p>
             </div>
 
             <!-- 세부내용 -->
@@ -59,18 +62,13 @@
                 <p>챌린지 세부내용</p>
                 <p class="text-xs text-gray-500"><i class="fas fa-coffee"></i> 해당 챌린지는 커피내기 챌린지 입니다.</p>
             </div>
-            <textarea class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md">TIL 도전!
-                매일 배운 내용, 매일 정리하면서
-                같이 공부해요!
-
-                이번 주 빠지지 않고 실천하실 분 😄
+            <textarea class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md">
+                {{challenge.details}}
             </textarea>
 
             <!-- 참가자 리스트 -->
             <div class="flex flex-row w-full justify-start">
-                <p>참여자</p>
-                <p>3</p>
-                <p>명</p>
+                <p>참여자 {{challenge.participants | length}}명</p>
             </div>
             <div class="flex flex-col h-40 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
                 <table class="table-auto">
@@ -82,20 +80,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <td>임재홍</td>
-                            <td>4</td>
-                            <td>1</td>
-                        </tr>
+                        {%for participants in challenge%}
                         <tr>
-                            <td>임재홍</td>
-                            <td>3</td>
-                            <td>2</td>
+                            <td>{{challenge.participants.name}}</td>
+                            <td>{{challenge.participants.count}}</td>
+                            <td>{{challenge.participants.rank}}</td>
                         </tr>
-                        <tr>
-                            <td>임재홍</td>
-                            <td>1</td>
-                            <td>3</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -104,9 +95,7 @@
             <div>
                 <h3>인증방법</h3>
                 <div class="flex flex-col h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
-                    당일 23:59까지
-                    <br>
-                    블로그 업로드 화면 캡쳐
+                    {{challenge.verification_method}}
                 </div>
             </div>
 
@@ -122,15 +111,7 @@
         <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg">포기하기</button>
     </div>
     <script>
-        function gotomain() {
-
-        }
     </script>
-    <!-- <script>
-        function attend() {
-
-        }
-    </script> -->
 </body>
 
 </html>

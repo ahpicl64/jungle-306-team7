@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 
 # auth 관련 api import
 from apis.user_api import auth_routes
-from apis.challenge_api import generate_routes
+from apis.challenge_api import challenge_routes
 
 app = Flask(__name__)
 
@@ -28,7 +28,7 @@ jwt = JWTManager(app)
 # === 블루프린트 등록 ===
 app.register_blueprint(auth_routes)
 # *** 각 import한 api 블루프린트 등록 
-app.register_blueprint(generate_routes)
+app.register_blueprint(challenge_routes)
 
 #  === HTML 렌더링 ===
 @app.route('/')
@@ -50,9 +50,9 @@ def signIn():
 def list():
     return render_template('chal_list.html')
 
-@app.route('/detail')
-def detail():
-    return render_template('chal_detail.html')
+@app.route('/challenge/<id>')
+def detail(id):
+    return render_template('chal_detail.html', challenge_id=id)
 
 @app.route('/generate')
 def generate():

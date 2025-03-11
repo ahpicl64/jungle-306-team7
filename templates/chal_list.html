@@ -40,111 +40,55 @@
             </div>
             <!-- 챌린지 목록 카드 -->
             <div class="row gx-2 gy-3">
-                <!-- 첫 번째 카드 -->
-                <div class="col-6 col-md-6">
+                <!-- jinja 반복문 활용, 각 챌린지 데이터 렌더 -->
+                {% for challenge in challenges %}
+                <div class="col-6 col-md-6" onclick="gotodetail('{{challenge._id}}')">
                     <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
                         <!-- 제목과 인원 -->
                         <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-white">00명 참여 중</p>
+                            <h2 class="fs-6 fw-bold">{{ challenge.name }}</h2>
+                            <p class="text-white">{{ challenge.participants | length }}명 참여 중</p>
                         </div>
                         <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex justify-content-center align-items-center gap-3">
+                        <!-- jinja 구문으로 반복해서 사용자들의 사진을 불러오도록
+                         제한사항 : 모든 사진을 불러오게되어 수평스크롤 하게됨,
+                         불러올 사진 수를 제한하거나 조치
+                         아직 DB에 사용자별 사진 없음.-->
+                        <!-- <div class="d-flex justify-content-center align-items-center gap-3">
                             <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
                                 height="30" alt="사용자 프로필">
                             <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
                                 height="30" alt="사용자 프로필">
                             <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
                                 height="30" alt="사용자 프로필">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-
-                <!-- 두 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 2</h2>
-                            <p class="text-white">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex justify-content-center align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
+                <!-- 챌린지 렌더 반문 종료 -->
+                {% endfor %}
 
 
-                <!-- 세 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 3</h2>
-                            <p class="text-white">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex justify-content-center align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
+                <!-- 더보기 버튼 -->
+                <button type="button" class="position-fixed bg-light text-dark rounded-circle shadow"
+                    style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none;"
+                    onclick="gotoGenerateChal()">
+                    <i class="fas fa-plus fa-lg"></i>
+                </button>
 
 
-                <!-- 네 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 4</h2>
-                            <p class="text-white">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex justify-content-center align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30"
-                                height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
-
-
-            <!-- 더보기 버튼 -->
-            <button type="button" class="position-fixed bg-light text-dark rounded-circle shadow"
-                style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none;"
-                onclick="gotoGenerateChal()">
-                <i class="fas fa-plus fa-lg"></i>
-            </button>
-
-
-
-
         </div>
-    </div>
-    <script>
-        function gotomain() {
+        <script>
+            function gotodetail(id) {
+                window.location.href=`/challenge/${id}` 
+            }
 
-        }
+            function gotoGenerateChal() {
 
-        function gotoGenerateChal() {
-
-        }
-    </script>
+            }
+        </script>
 </body>
 
 </html>
