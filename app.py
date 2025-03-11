@@ -46,7 +46,7 @@ def signIn():
     return render_template('sign_in.html')
 
 # 챌린지 목록 페이지로 이동하는 함수
-@app.route('/list')
+@app.route('/challenge')
 def list():
     return render_template('chal_list.html')
 
