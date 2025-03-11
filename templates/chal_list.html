@@ -22,7 +22,16 @@
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <title>챌린지 목록</title>
+    <script>
+        function generate_chal(){//챌린지 생성 페이지로 이동
 
+             window.location.href="/generate"
+        }
+
+        function main(){//메인 페이지로 이동
+             window.location.href="/"
+        }
+    </script>
 
 </head>
 
@@ -31,7 +40,7 @@
         <div class="d-flex flex-column py-3 px-4 vh-100">
             <!--페이지 제목-->
             <div class="fs-5 mb-4 fw-semibold">
-                <button class="bg-transparent border-0 p-0" type="button" onclick="gotomain()">
+                <button class="bg-transparent border-0 p-0" type="button" onclick="main()">
                     <span>
                         <i class="fa-solid fa-chevron-left text-dark fa-lg"></i> <!-- 왼쪽 화살표 아이콘 -->
                     </span>
@@ -80,15 +89,31 @@
 
             </div>
         </div>
-        <script>
-            function gotodetail(id) {
-                window.location.href=`/challenge/${id}` 
-            }
 
-            function gotoGenerateChal() {
 
-            }
-        </script>
+
+            <!-- 만들기 버튼 -->
+            <button type="button" class="position-fixed bg-light text-dark rounded-circle shadow"
+                style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none;"
+                onclick="generate_chal()">
+                <i class="fas fa-plus fa-lg"></i>
+            </button>
+
+
+
+
+        </div>
+    </div>
+    
+    <script>
+        function gotodetail(id) {
+            window.location.href=`/challenge/${id}` 
+        }
+
+        function gotoGenerateChal() {
+
+        }
+    </script>
 </body>
 
 </html>

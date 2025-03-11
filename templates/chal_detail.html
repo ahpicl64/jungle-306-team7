@@ -25,9 +25,12 @@
 
 
 
-    <title>커피챌 | 챌린지 세부사항 | {challenge.name}</title>
+    <title>커피챌 | 챌린지 세부사항| {challenge.name}</title>
     <script>
-
+        function main(){//메인 페이지로 이동
+            
+             window.location.href="/"
+        }
     </script>
 </head>
 
@@ -35,7 +38,7 @@
     <div class="flex flex-col py-7 px-6 h-screen">
         <!-- 챌린지 헤드라인 -->
         <div class="mb-12 text-xl font-semibold">
-            <button class="mr-3" type="button" onclick="gotomain()">
+            <button class="mr-3" type="button" onclick="main()">
                 <span>
                     <i class="fa-solid fa-chevron-left" a="index.html"></i>
                 </span>
@@ -110,8 +113,12 @@
         <button class="bg-green-400 rounded-[10px] w-[33%] h-13 text-lg">인증하기</button>
         <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg">포기하기</button>
     </div>
-    <script>
-    </script>
+    
+    <!-- <script>
+        function attend() {
+
+        }
+    </script> -->
 </body>
 
 </html>
