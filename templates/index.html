@@ -1,194 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script> -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- 폰트어썸 -->
-    <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
+    ></script>
 
     <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
+      rel="stylesheet"
+    />
     <title>커피챌</title>
-</head>
+    <script>
+      $(document).ready(function () {
+        // 1. 쿠키에서 사용자의 이름을 가져오기
+        function getCookie(name) {
+          var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+          return value ? value[2] : null;
+        }
 
-<body>
+        // 2. 사용자 이름을 UI에 적용하기
+        let username = getCookie("name");
+        if (username) {
+          $("#user-name").html(username);
+        }
+      });
+    </script>
+  </head>
+
+  <body>
     <div class="d-flex flex-column py-3 px-4 vh-100">
-        <!--페이지 제목-->
-        <div class="fs-5 mb-4 fw-semibold">
-            커피챌
+      <!--페이지 제목-->
+      <div class="fs-5 mb-4 fw-semibold">커피챌</div>
+      <br />
+      <!--회원이 참여 중인 챌린지 목록 문구-->
+      <div class="d-flex w-100 fw-semibold px-2">
+        <span id="user-name">길동</span>님이 참여 중인 챌린지
+      </div>
+      <p></p>
+
+      <!-- 참여 중인 챌린지 목록 -->
+      <div class="px-2 d-flex flex-column gap-3">
+        <div
+          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+          style="border-color: #4ade80 !important; width: 100%"
+        >
+          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+          <div class="d-flex align-items-center gap-2">
+            <p class="mb-0">매일 기술 블로그 쓰기</p>
+            <p class="text-muted fs-6 mb-0">3/7</p>
+          </div>
+
+          <!-- 오른쪽: 인증 버튼 -->
+          <button
+            class="btn text-white px-2 py-2 rounded-pill small"
+            style="background-color: #4ade80"
+          >
+            인증하러 가기
+          </button>
         </div>
-        <br>
-        <br>
-        <br>
-        <!--회원이 참여 중인 챌린지 목록 문구-->
-        <div class="d-flex w-100 fw-semibold">
-            길동님이 참여 중인 챌린지
+
+        <div
+          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+          style="border-color: #4ade80 !important; width: 100%"
+        >
+          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+          <div class="d-flex align-items-center gap-2">
+            <p class="mb-0">매일 기술 블로그 쓰기</p>
+            <p class="text-muted fs-6 mb-0">3/7</p>
+          </div>
+
+          <!-- 오른쪽: 인증 버튼 -->
+          <button
+            class="btn text-white px-2 py-2 rounded-pill small"
+            style="background-color: #4ade80"
+          >
+            인증하러 가기
+          </button>
         </div>
+
+        <div
+          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+          style="border-color: #4ade80 !important; width: 100%"
+        >
+          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+          <div class="d-flex align-items-center gap-2">
+            <p class="mb-0">매일 기술 블로그 쓰기</p>
+            <p class="text-muted fs-6 mb-0">3/7</p>
+          </div>
+
+          <!-- 오른쪽: 인증 버튼 -->
+          <button
+            class="btn text-white px-2 py-2 rounded-pill small"
+            style="background-color: #4ade80"
+          >
+            인증하러 가기
+          </button>
+        </div>
+
+        <!--더보기 버튼-->
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="text-dark rounded-pill small"
+            style="background-color: rgb(243, 243, 243); border: none"
+            onclick="gotoChalList()"
+          >
+            더보기
+          </button>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <!--전체 챌린지-->
+      <div class="px-2 d-flex flex-column gap-2">
+        <!--문구-->
+        <div class="d-flex w-100 fw-semibold">전체 챌린지</div>
         <p></p>
 
-        <!--참여 중인 챌린지 목록-->
-        <div class="px-3 d-flex flex-column gap-2">
-            <div class=" d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-                style="border-color:#4ade80 !important; width: 100%;">
-
-                <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-                <div class="d-flex align-items-center gap-2">
-                    <p class="mb-0">매일 기술 블로그 쓰기</p>
-                    <p class="text-muted fs-6 mb-0">3/7</p>
-                </div>
-
-                <!-- 오른쪽: 인증 버튼 -->
-                <button class="btn text-white px-3 py-1 rounded-pill" style="background-color: #4ade80;">
-                    인증하러 가기
-                </button>
+        <!--진행 중인 챌린지 목록 -->
+        <div class="row gx-2 gy-3">
+          <!-- 첫 번째 카드 -->
+          <div class="col-6 col-md-6">
+            <div
+              class="border p-3 rounded"
+              style="background-color: #4ade80; height: 120px"
+            >
+              <!-- 제목과 인원 -->
+              <div class="d-grid">
+                <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
+                <p class="text-muted">00명 참여 중</p>
+              </div>
+              <!-- 사용자 프로필 사진 -->
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+              </div>
             </div>
+          </div>
 
-            <div class=" d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-                style="border-color:#4ade80 !important; width: 100%;">
-
-                <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-                <div class="d-flex align-items-center gap-2">
-                    <p class="mb-0">매일 기술 블로그 쓰기</p>
-                    <p class="text-muted fs-6 mb-0">3/7</p>
-                </div>
-
-                <!-- 오른쪽: 인증 버튼 -->
-                <button class="btn text-white px-3 py-1 rounded-pill" style="background-color: #4ade80;">
-                    인증하러 가기
-                </button>
+          <!-- 두 번째 카드 -->
+          <div class="col-6 col-md-6">
+            <div
+              class="border p-3 rounded"
+              style="background-color: #4ade80; height: 120px"
+            >
+              <!-- 제목과 인원 -->
+              <div class="d-grid">
+                <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
+                <p class="text-muted">00명 참여 중</p>
+              </div>
+              <!-- 사용자 프로필 사진 -->
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+              </div>
             </div>
+          </div>
 
-            <div class=" d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-                style="border-color:#4ade80 !important; width: 100%;">
-
-                <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-                <div class="d-flex align-items-center gap-2">
-                    <p class="mb-0">매일 기술 블로그 쓰기</p>
-                    <p class="text-muted fs-6 mb-0">3/7</p>
-                </div>
-
-                <!-- 오른쪽: 인증 버튼 -->
-                <button class="btn text-white px-3 py-1 rounded-pill" style="background-color: #4ade80;">
-                    인증하러 가기
-                </button>
+          <!-- 세 번째 카드 -->
+          <div class="col-6 col-md-6">
+            <div
+              class="border p-3 rounded"
+              style="background-color: #4ade80; height: 120px"
+            >
+              <!-- 제목과 인원 -->
+              <div class="d-grid">
+                <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
+                <p class="text-muted">00명 참여 중</p>
+              </div>
+              <!-- 사용자 프로필 사진 -->
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+              </div>
             </div>
+          </div>
 
-            <!--더보기 버튼-->
-            <div class="d-flex justify-content-end">
-                <button type="button" class="text-dark rounded-pill small" style="background-color: rgb(243,243,243); border: none;" onclick="gotoChalList()">
-                    더보기
-                </button>
+          <!-- 네 번째 카드 -->
+          <div class="col-6 col-md-6">
+            <div
+              class="border p-3 rounded"
+              style="background-color: #4ade80; height: 120px"
+            >
+              <!-- 제목과 인원 -->
+              <div class="d-grid">
+                <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
+                <p class="text-muted">00명 참여 중</p>
+              </div>
+              <!-- 사용자 프로필 사진 -->
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+                <img
+                  id="profilePreview"
+                  src=""
+                  class="rounded-circle bg-light border"
+                  width="30"
+                  height="30"
+                  alt="사용자 프로필"
+                />
+              </div>
             </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              class="text-dark rounded-pill small"
+              style="background-color: rgb(243, 243, 243); border: none"
+              onclick="gotoChalList()"
+            >
+              더보기
+            </button>
+          </div>
         </div>
-
-        <br>
-        <br>
-
-        <!--현재 진행 중인 챌린지-->
-        <div class="px-3 d-flex flex-column gap-2">
-            <!--문구-->
-        <div class="d-flex w-100 fw-semibold">
-            현재 진행 중인 챌린지
-        </div>
-        <p></p>
-
-            <!--진행 중인 챌린지 목록 -->
-            <div class="row gx-2 gy-3  ">
-                <!-- 첫 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-muted">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 두 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-muted">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 세 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-muted">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 네 번째 카드 -->
-                <div class="col-6 col-md-6">
-                    <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
-                        <!-- 제목과 인원 -->
-                        <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-muted">00명 참여 중</p>
-                        </div>
-                        <!-- 사용자 프로필 사진 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30" alt="사용자 프로필">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>         
-
-
-
+      </div>
     </div>
     <script>
-        function gotoChalList() {
-
-        }
+      function gotoChalList() {}
     </script>
-
-
-</body>
-
+  </body>
 </html>
