@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,11 +16,108 @@
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
 
+    <!-- 폰트어썸 -->
+    <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
+
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-        <title>7조 | 챌린지 목록</title>
+    <title>챌린지 목록</title>
 </head>
+
 <body>
-    
+    <div>
+        <div class="d-flex flex-column py-3 px-4 vh-100">
+            <!--페이지 제목-->
+            <div class="fs-5 mb-4 fw-semibold">
+                <button class="bg-transparent border-0 p-0" type="button" onclick="gotomain()">
+                    <span>
+                        <i class="fa-solid fa-chevron-left text-dark fa-lg"></i> <!-- 왼쪽 화살표 아이콘 -->
+                    </span>
+                </button>
+                챌린지 목록
+            </div>
+            <!-- 챌린지 목록 카드 -->
+            <div class="row gx-2 gy-3">
+                <!-- 첫 번째 카드 -->
+                <div class="col-6 col-md-6">
+                    <div class="border p-3 rounded" style="background-color: #4ade80;">
+                        <!-- 제목과 인원 -->
+                        <div class="d-grid gap-2 mb-3">
+                            <h2 class="fs-5 fw-bold">챌린지 제목 1</h2>
+                            <p class="text-muted">참여인원: 5명</p>
+                        </div>
+                        <!-- 사용자 프로필 사진 -->
+                        <div class="d-flex align-items-center gap-1">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 두 번째 카드 -->
+                <div class="col-6 col-md-6">
+                    <div class="border p-3 rounded" style="background-color: #4ade80;">
+                        <div class="d-grid gap-2 mb-3">
+                            <h2 class="fs-5 fw-bold">챌린지 제목 2</h2>
+                            <p class="text-muted">참여인원: 8명</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 세 번째 카드 -->
+                <div class="col-6 col-md-6">
+                    <div class="border p-3 rounded" style="background-color: #4ade80;">
+                        <div class="d-grid gap-2 mb-3">
+                            <h2 class="fs-5 fw-bold">챌린지 제목 3</h2>
+                            <p class="text-muted">참여인원: 3명</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 네 번째 카드 -->
+                <div class="col-6 col-md-6">
+                    <div class="border p-3 rounded" style="background-color: #4ade80;">
+                        <div class="d-grid gap-2 mb-3">
+                            <h2 class="fs-5 fw-bold">챌린지 제목 4</h2>
+                            <p class="text-muted">참여인원: 6명</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                            <img id="profilePreview" src="" class="rounded-circle bg-light border" width="35" height="35" alt="사용자 프로필">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 더보기 버튼 -->
+            <a href="nextpage.html" class="position-fixed bg-light text-dark rounded-circle shadow"
+                style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center;">
+                <i class="fas fa-plus fa-lg"></i>
+            </a>
+
+
+
+        </div>
+    </div>
+    <script>
+        function gotomain() {
+
+        }
+    </script>
 </body>
+
 </html>
