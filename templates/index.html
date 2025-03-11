@@ -41,19 +41,58 @@
     />
     <title>커피챌</title>
     <script>
-      $(document).ready(function () {
-        // 1. 쿠키에서 사용자의 이름을 가져오기
-        function getCookie(name) {
-          var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-          return value ? value[2] : null;
-        }
+      // ** 쿠키 정보를 가져오는 함수 **
+      function getCookie(name) {
+        var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+        return value ? value[2] : null;
+      }
 
-        // 2. 사용자 이름을 UI에 적용하기
-        let username = getCookie("name");
-        if (username) {
-          $("#user-name").html(username);
+      $(document).ready(function () {
+        // 1. 토큰이 없으면 비회원 화면 띄우기
+        var temp_html = `
+        <div class="d-flex flex-column w-100">
+        <br />
+        <br />
+        <div class="fs-3 lh-sm fw-normal">
+          챌린지 참여를 원하신다면,
+          <br />
+          로그인을 해주세요!
+        </div>
+        <button
+          class="rounded-pill ml-auto border-0 d-flex justify-content-center align-items-center lh-sm text-white"
+          style="
+            background-color: #4ade80;
+            width: 100px;
+            height: 100px;
+            margin-left: auto;
+          "
+          onclick="location.href='/signin';"
+        >
+          로그인<br />바로가기
+        </button>
+        <br />
+        <br />
+      </div>
+      `;
+        let token = getCookie("access_token");
+        if (!token) {
+          $("#user-status").html(temp_html);
+        }
+        // 2. 회원이라면 사용자 이름을 UI에 적용하기
+        else {
+          $("#user-name").html(getCookie("name"));
         }
       });
+
+      // ** 챌린지 더보기 클릭시, 해당 화면으로 이동하는 함수 **
+      function gotoChalList() {
+        let token = getCookie("access_token");
+        if (!token) {
+          alert("로그인이 필요해요!");
+        } else {
+          location.href = "/list"; // 챌린지 목록 페이지로 이동
+        }
+      }
     </script>
   </head>
 
@@ -62,81 +101,83 @@
       <!--페이지 제목-->
       <div class="fs-5 mb-4 fw-semibold">커피챌</div>
       <br />
-      <!--회원이 참여 중인 챌린지 목록 문구-->
-      <div class="d-flex w-100 fw-semibold px-2">
-        <span id="user-name">길동</span>님이 참여 중인 챌린지
-      </div>
-      <p></p>
 
-      <!-- 참여 중인 챌린지 목록 -->
-      <div class="px-2 d-flex flex-column gap-3">
-        <div
-          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-          style="border-color: #4ade80 !important; width: 100%"
-        >
-          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-          <div class="d-flex align-items-center gap-2">
-            <p class="mb-0">매일 기술 블로그 쓰기</p>
-            <p class="text-muted fs-6 mb-0">3/7</p>
-          </div>
-
-          <!-- 오른쪽: 인증 버튼 -->
-          <button
-            class="btn text-white px-2 py-2 rounded-pill small"
-            style="background-color: #4ade80"
-          >
-            인증하러 가기
-          </button>
+      <div id="user-status">
+        <!--회원이 참여 중인 챌린지 목록 문구-->
+        <div class="d-flex w-100 fw-semibold px-2 mb-4">
+          <span id="user-name">길동</span>님이 참여 중인 챌린지
         </div>
 
-        <div
-          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-          style="border-color: #4ade80 !important; width: 100%"
-        >
-          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-          <div class="d-flex align-items-center gap-2">
-            <p class="mb-0">매일 기술 블로그 쓰기</p>
-            <p class="text-muted fs-6 mb-0">3/7</p>
+        <!-- 참여 중인 챌린지 목록 -->
+        <div class="px-2 d-flex flex-column gap-3">
+          <div
+            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+            style="border-color: #4ade80 !important; width: 100%"
+          >
+            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+            <div class="d-flex align-items-center gap-2">
+              <p class="mb-0">매일 기술 블로그 쓰기</p>
+              <p class="text-muted fs-6 mb-0">3/7</p>
+            </div>
+
+            <!-- 오른쪽: 인증 버튼 -->
+            <button
+              class="btn text-white px-2 py-2 rounded-pill small"
+              style="background-color: #4ade80"
+            >
+              인증하러 가기
+            </button>
           </div>
 
-          <!-- 오른쪽: 인증 버튼 -->
-          <button
-            class="btn text-white px-2 py-2 rounded-pill small"
-            style="background-color: #4ade80"
+          <div
+            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+            style="border-color: #4ade80 !important; width: 100%"
           >
-            인증하러 가기
-          </button>
-        </div>
+            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+            <div class="d-flex align-items-center gap-2">
+              <p class="mb-0">매일 기술 블로그 쓰기</p>
+              <p class="text-muted fs-6 mb-0">3/7</p>
+            </div>
 
-        <div
-          class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-          style="border-color: #4ade80 !important; width: 100%"
-        >
-          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-          <div class="d-flex align-items-center gap-2">
-            <p class="mb-0">매일 기술 블로그 쓰기</p>
-            <p class="text-muted fs-6 mb-0">3/7</p>
+            <!-- 오른쪽: 인증 버튼 -->
+            <button
+              class="btn text-white px-2 py-2 rounded-pill small"
+              style="background-color: #4ade80"
+            >
+              인증하러 가기
+            </button>
           </div>
 
-          <!-- 오른쪽: 인증 버튼 -->
-          <button
-            class="btn text-white px-2 py-2 rounded-pill small"
-            style="background-color: #4ade80"
+          <div
+            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+            style="border-color: #4ade80 !important; width: 100%"
           >
-            인증하러 가기
-          </button>
-        </div>
+            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+            <div class="d-flex align-items-center gap-2">
+              <p class="mb-0">매일 기술 블로그 쓰기</p>
+              <p class="text-muted fs-6 mb-0">3/7</p>
+            </div>
 
-        <!--더보기 버튼-->
-        <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            class="text-dark rounded-pill small"
-            style="background-color: rgb(243, 243, 243); border: none"
-            onclick="gotoChalList()"
-          >
-            더보기
-          </button>
+            <!-- 오른쪽: 인증 버튼 -->
+            <button
+              class="btn text-white px-2 py-2 rounded-pill small"
+              style="background-color: #4ade80"
+            >
+              인증하러 가기
+            </button>
+          </div>
+
+          <!--더보기 버튼-->
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              class="text-dark rounded-pill small"
+              style="background-color: rgb(243, 243, 243); border: none"
+              onclick="gotoChalList()"
+            >
+              더보기
+            </button>
+          </div>
         </div>
       </div>
 
@@ -146,8 +187,7 @@
       <!--전체 챌린지-->
       <div class="px-2 d-flex flex-column gap-2">
         <!--문구-->
-        <div class="d-flex w-100 fw-semibold">전체 챌린지</div>
-        <p></p>
+        <div class="d-flex w-100 fw-semibold mb-3">전체 챌린지</div>
 
         <!--진행 중인 챌린지 목록 -->
         <div class="row gx-2 gy-3">
@@ -327,8 +367,5 @@
         </div>
       </div>
     </div>
-    <script>
-      function gotoChalList() {}
-    </script>
   </body>
 </html>

@@ -61,9 +61,8 @@
               // 토큰, 유저 정보 쿠키에 저장
               var now = new Date();
               var expirationDate = new Date();
-              expirationDate = expirationDate
-                .setHours(now.getHours() + 2)
-                .toUTCString(); // 2시간 이후에 토큰 만료
+              expirationDate.setHours(expirationDate.getHours() + 2);
+              expirationDate = expirationDate.toUTCString(); // 2시간 이후에 토큰 만료
 
               document.cookie = `access_token=${response.access_token}; expires=${expirationDate}; path=/; Secure`;
               document.cookie = `name=${response.name}; expires=${expirationDate}; path=/; Secure`;
