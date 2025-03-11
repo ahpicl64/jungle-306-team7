@@ -25,6 +25,71 @@
 
 
     <title>커피챌 | 챌린지 만들기</title>
+
+
+    <script>
+        function gotomain() {
+
+        }
+
+        // 회원가입 핸들러
+        function generateChallenge() {
+            // 입력한 데이터 가져오기
+            let name = $("#name").val();
+            let start_date = $("#start_date").val();
+            let end_date = $("#end_date").val();
+            let details = $("#details").val();
+            let verification_method = $("#verification_method").val();
+            let bet_required = $("#bet_required").is(":checked");
+
+            // 생성 요청
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    name: name,
+                    start_date: start_date,
+                    end_date: end_date, 
+                    details: details, 
+                    verification_method: verification_method, 
+                    bet_required: bet_required,
+                }), // JSON 변환
+                success: function (response){
+                    if (response["result"] == "success"){
+                        alert("챌린지 생성이 완료되었습니다.")
+                        // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
+                        console.log(response);
+                    }
+                }
+            })
+        }
+
+        // {
+        //     "_id": "65f67890abc12345def67890",
+        //         "name": "아침 기상 챌린지", (string)
+        //     "host_user_id": "65f12345abc67890def12345",
+        //         "start_date": date 형식,
+        //             "end_date": date 형식,
+        //                 "duration": 30(int),
+        //                     "details": "매일 아침 7시 기상 인증하기"(string),
+        //                         "verification_method": "사진 업로드"(string),
+        //                             "bet_required": true(bool),
+        //                                 "participants": [
+        //                                     {
+        //                                         "user_id": "65f11111abc22222def33333",
+        //                                         "verifications": {
+        //                                             "count": 2,
+        //                                             "photos": [
+        //                                                 { "photo_url": "https://img.com/1.jpg", "date": "2025-03-10" },
+        //                                                 { "photo_url": "https://img.com/2.jpg", "date": "2025-03-11" },
+        //                                                 ...
+        //   ]
+        //                                         }
+        //                                     }
+        //                                 ]
+        // }
+    </script>
 </head>
 
 <body>
@@ -56,10 +121,10 @@
             </div>
 
             <!-- 세부내용 -->
-            <div id="details" class="flex flex-row w-full justify-between items-center">
+            <div class="flex flex-row w-full justify-between items-center">
                 <p>챌린지 세부내용</p>
             </div>
-            <input class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
+            <input id="details" class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
                 placeholder="챌린지 내용을 입력해주세요.">
             </input>
 
@@ -73,7 +138,7 @@
 
             <!-- 커피내기 유무 체크박스 -->
             <div class="flex flex-row w-full items-center gap-1">
-                <input id="bet_required" type="checkbox" disabled>
+                <input id="bet_required" type="checkbox">
                 <p>커피내기를 하시겠어요? 😜</p>
             </div>
 
@@ -86,57 +151,7 @@
         <button onclick="generateChallenge()" class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">만들기</button>
     </div>
 
-    <script>
-        function gotomain() {
-
-        }
-
-        function generateChallenge() {
-            let name = $("/name").val();
-            let start_date = $("/start_date");
-            let end_date = $("/end_date");
-            let details = $("/details").val();
-            let verification_method = $("/verification_method").val();
-            let bet_required = $("/bet_required").is(":checked");
-
-            $.ajax({
-                type: "POST",
-                url: "/challenge",
-                data: {name, start_date, end_date, details, verification_method, bet_required},
-                success: function (response){
-                    if (response["result"] == "success"){
-                        alert("챌린지 생성이 완료되었습니다.")
-                        // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
-                    }
-                }
-            })
-        }
-
-        // {
-        //     "_id": "65f67890abc12345def67890",
-        //         "name": "아침 기상 챌린지", (string)
-        //     "host_user_id": "65f12345abc67890def12345",
-        //         "start_date": date 형식,
-        //             "end_date": date 형식,
-        //                 "duration": 30(int),
-        //                     "details": "매일 아침 7시 기상 인증하기"(string),
-        //                         "verification_method": "사진 업로드"(string),
-        //                             "bet_required": true(bool),
-        //                                 "participants": [
-        //                                     {
-        //                                         "user_id": "65f11111abc22222def33333",
-        //                                         "verifications": {
-        //                                             "count": 2,
-        //                                             "photos": [
-        //                                                 { "photo_url": "https://img.com/1.jpg", "date": "2025-03-10" },
-        //                                                 { "photo_url": "https://img.com/2.jpg", "date": "2025-03-11" },
-        //                                                 ...
-        //   ]
-        //                                         }
-        //                                     }
-        //                                 ]
-        // }
-    </script>
+    
     <!-- <script>
         function attend() {
 

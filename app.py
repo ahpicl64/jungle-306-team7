@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 
 # auth 관련 api import
 from apis.user_api import auth_routes
+from apis.challenge_api import generate_routes
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ jwt = JWTManager(app)
 # === 블루프린트 등록 ===
 app.register_blueprint(auth_routes)
 # *** 각 import한 api 블루프린트 등록 
+app.register_blueprint(generate_routes)
 
 #  === HTML 렌더링 ===
 @app.route('/')
