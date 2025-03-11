@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from flask_jwt_extended import create_access_token
 from models.user_model import create_user, get_user_by_email, find_user
+import datetime
 
 auth_routes = Blueprint('auth', __name__)  # 블루프린트 생성
 
@@ -14,7 +15,7 @@ def signin_proc():
     user_info = find_user(user_id, user_pw)
 
     if user_info:
-        access_token = create_access_token(identity=user_id, expires_delta=False)
+        access_token = create_access_token(identity=str(user_info['_id']), expires_delta=datetime.timedelta(hours=2)) # 만료 시간(2시간 후)
         return jsonify({
             'result': "success",
             'access_token': access_token,

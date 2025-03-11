@@ -72,9 +72,11 @@
           success: function (response) {
             if (response["result"] == "success") {
               alert("회원가입 성공!");
-              console.log(response);
+
+              // 로그인 페이지 이동
+              window.location.href = "/signin";
             } else {
-              alert("서버 오류!");
+              alert("다시 입력해주세요!");
             }
           },
         });

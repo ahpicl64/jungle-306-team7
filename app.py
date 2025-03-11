@@ -45,7 +45,7 @@ def signIn():
 
 @app.route('/detail')
 def detail():
-    return render_template('chal_detail.thml')
+    return render_template('chal_detail.html')
 
 @app.route('/generate')
 def generate():
