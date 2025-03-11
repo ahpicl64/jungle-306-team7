@@ -58,6 +58,11 @@ def detail():
 def generate():
     return render_template('generate_chal.html')
 
+@app.route('/mypage')
+def mypage():
+    return render_template('my_chal.html')
+
+
 if __name__ == '__main__':
     # TODO: 포트 번호 5000으로 변경
     app.run('0.0.0.0', port=5001, debug=True)
