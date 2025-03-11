@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- fontawsome -->
+    <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
+
+
+    <!-- tailwind css -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -18,14 +22,115 @@
 
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-    
-    <title>7조 | 챌린지 세부사항</title>
+
+
+
+    <title>커피챌 | 챌린지 세부사항</title>
 </head>
 
 <body>
-    <div>
-        <div></div>
+    <div class="flex flex-col py-7 px-6 h-screen">
+        <!-- 챌린지 헤드라인 -->
+        <div class="mb-12 text-xl font-semibold">
+            <button class="mr-3" type="button" onclick="gotomain()">
+                <span>
+                    <i class="fa-solid fa-chevron-left" a="index.html"></i>
+                </span>
+            </button>
+            매일 기술 블로그 쓰기 챌린지!
+        </div>
+
+        <!-- 챌린지 정보 -->
+        <div class="px-3 flex flex-col gap-2">
+            <!-- 기간 -->
+            <div class="flex flex-row justify-between">
+                <p>기간</p>
+                <p>2025년 3월 10일 ~ 2025년 3월 16일</p>
+            </div>
+
+            <!-- 작성자 -->
+            <div class="flex flex-row justify-between">
+                <p>주최자</p>
+                <p>임재홍</p>
+            </div>
+
+            <!-- 세부내용 -->
+            <div class="flex flex-row w-full justify-between items-center">
+                <p>챌린지 세부내용</p>
+                <p class="text-xs text-gray-500"><i class="fas fa-coffee"></i> 해당 챌린지는 커피내기 챌린지 입니다.</p>
+            </div>
+            <textarea class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md">TIL 도전!
+                매일 배운 내용, 매일 정리하면서
+                같이 공부해요!
+
+                이번 주 빠지지 않고 실천하실 분 😄
+            </textarea>
+
+            <!-- 참가자 리스트 -->
+            <div class="flex flex-row w-full justify-start">
+                <p>참여자</p>
+                <p>3</p>
+                <p>명</p>
+            </div>
+            <div class="flex flex-col h-40 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>인증 횟수</th>
+                            <th>순위</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <td>임재홍</td>
+                            <td>4</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>임재홍</td>
+                            <td>3</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>임재홍</td>
+                            <td>1</td>
+                            <td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 인증방법 설명 -->
+            <div>
+                <h3>인증방법</h3>
+                <div class="flex flex-col h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
+                    당일 23:59까지
+                    <br>
+                    블로그 업로드 화면 캡쳐
+                </div>
+            </div>
+
+        </div>
     </div>
+    <!-- 참여하기 또는 인증/포기하기 버튼 -->
+    <!-- 추후 로그인 유무에 따라 function으로 삭제 또는 나타나게 구현 -->
+    <!-- <div class="fixed bottom-5 w-full flex flex-col items-center">
+        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">참여하기</button>
+    </div> -->
+    <div class="fixed bottom-5 w-full flex flex-row gap-3 items-center justify-center">
+        <button class="bg-green-400 rounded-[10px] w-[33%] h-13 text-lg">인증하기</button>
+        <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg">포기하기</button>
+    </div>
+    <script>
+        function gotomain() {
+
+        }
+    </script>
+    <!-- <script>
+        function attend() {
+
+        }
+    </script> -->
 </body>
 
 </html>

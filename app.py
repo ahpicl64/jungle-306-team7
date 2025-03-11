@@ -1,3 +1,4 @@
+from ast import Return
 from bson import ObjectId
 from pymongo import MongoClient
 
@@ -54,6 +55,24 @@ app.json = CustomJSONProvider(app)
 def home():
     return render_template('index.html')
 
+# 회원가입 페이지로 이동하는 함수
+@app.route('/signup')
+def signUp():
+    return render_template('sign_up.html')
+
+# 로그인 페이지로 이동하는 함수
+@app.route('/signin')
+def signIn():
+    return render_template('sign_in.html')
+
+@app.route('/detail')
+def detail():
+    return render_template('chal_detail.thml')
+
+@app.route('/generate')
+def generate():
+    return render_template('generate_chal.html')
+
 if __name__ == '__main__':
     print(sys.executable)
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5001, debug=True)
