@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- fontawsome -->
+    <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
+
+
+    <!-- tailwind css -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+
+
+    <title>커피챌 | 챌린지 만들기</title>
+</head>
+
+<body>
+    <div class="flex flex-col py-7 px-6 h-screen">
+        <!-- 챌린지 헤드라인 -->
+        <div class="mb-12 text-xl font-semibold">
+            <button class="mr-3" type="button" onclick="gotomain()">
+                <span>
+                    <i class="fa-solid fa-chevron-left" a="index.html"></i>
+                </span>
+            </button>
+            챌린지 만들기
+        </div>
+
+
+        <!-- 챌린지 정보 -->
+        <div class="px-3 flex flex-col gap-2">
+
+            <!-- 텍스트박스 / 챌린지명을 입력해주세요. -->
+
+
+            <!-- 기간 -->
+            <div class="flex flex-row justify-between">
+                <p>기간</p>
+                <p>2025년 3월 10일 ~ 2025년 3월 16일</p>
+            </div>
+
+            <!-- 세부내용 -->
+            <div class="flex flex-row w-full justify-between items-center">
+                <p>챌린지 세부내용</p>
+            </div>
+            <textarea class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
+                placeholder="챌린지 내용을 입력해주세요.">
+            </textarea>
+
+            <!-- 인증방법 설명 -->
+            <div>
+                <p>인증방법</p>
+                <textarea class="w-full h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
+                    placeholder="인증 방법을 입력해주세요.">
+                </textarea>
+            </div>
+
+            <!-- 커피내기 유무 체크박스 -->
+            <div class="flex flex-row w-full items-center gap-1">
+                <input type="checkbox" disabled>
+                <p>커피내기를 하시겠어요? 😜</p>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- 만들기 버튼 -->
+    <div class="fixed bottom-5 w-full flex flex-col items-center">
+        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">만들기</button>
+    </div>
+
+    <script>
+        function gotomain() {
+
+        }
+    </script>
+    <!-- <script>
+        function attend() {
+
+        }
+    </script> -->
+</body>
+
+</html>

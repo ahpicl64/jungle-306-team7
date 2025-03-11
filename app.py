@@ -1,3 +1,5 @@
+from ast import Return
+from bson import ObjectId
 from pymongo import MongoClient
 from flask import Flask, render_template, jsonify, request
 from flask_jwt_extended import JWTManager
@@ -41,7 +43,13 @@ def signUp():
 def signIn():
     return render_template('sign_in.html')
 
+@app.route('/detail')
+def detail():
+    return render_template('chal_detail.thml')
 
+@app.route('/generate')
+def generate():
+    return render_template('generate_chal.html')
 
 if __name__ == '__main__':
     # TODO: 포트 번호 5000으로 변경
