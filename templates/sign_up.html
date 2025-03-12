@@ -36,52 +36,6 @@
       rel="stylesheet"
     />
     <title>커피챌 | 회원가입</title>
-
-    <script>
-      // 파일 미리보기 기능
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", function (event) {
-          const file = event.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              document.getElementById("profilePreview").src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          }
-        });
-
-      // 회원가입 핸들러
-      function signup() {
-        // 1. 유저가 입력한 데이터 가져오기
-        let name = $("#name").val();
-        let email = $("#email").val();
-        let password = $("#password").val();
-
-        // 2. signup 요청하기
-        $.ajax({
-          type: "POST",
-          url: "/api/signup",
-          contentType: "application/json", // JSON으로 데이터 전송
-          data: JSON.stringify({
-            name: name,
-            email: email,
-            password: password,
-          }), // JSON 변환
-          success: function (response) {
-            if (response["result"] == "success") {
-              alert("회원가입 성공!");
-
-              // 로그인 페이지 이동
-              window.location.href = "/signin";
-            } else {
-              alert("다시 입력해주세요!");
-            }
-          },
-        });
-      }
-    </script>
   </head>
   <body>
     <div class="flex flex-col py-9 px-12 h-screen">
@@ -94,7 +48,7 @@
       <div class="w-full flex flex-col justify-center items-center my-10">
         <img
           id="profilePreview"
-          src=""
+          src="/static/logo.png"
           alt="프로필 사진"
           class="h-[120px] w-[120px] rounded-full bg-gray-100 border-0 object-cover"
         />
@@ -105,19 +59,24 @@
       <div class="flex flex-col gap-8">
         <div class="flex flex-row w-full justify-between items-center">
           <p>이름</p>
-          <input id="name" type="text" class="border-b" />
+          <input id="name" type="text" class="border-b pl-2" />
         </div>
         <div class="flex flex-row w-full justify-between items-center">
           <p>이메일</p>
-          <input id="email" type="email" class="border-b" />
+          <input id="email" type="email" class="border-b pl-2" />
         </div>
-        <div class="flex flex-row w-full justify-between items-center">
-          <p>비밀번호</p>
-          <input id="password" type="password" class="border-b" />
+        <div>
+          <div class="flex flex-row w-full justify-between items-center">
+            <p>비밀번호</p>
+            <input id="password" type="password" class="border-b pl-2" />
+          </div>
+          <p class="text-[10px] pt-1">
+            ※ 8~32자 이내로 영문, 숫자, 특수문자를 각각 최소 1개 이상 포함
+          </p>
         </div>
         <div class="flex flex-row w-full justify-between items-center">
           <p>비밀번호 확인</p>
-          <input type="password" class="border-b" />
+          <input id="password_confirm" type="password" class="border-b pl-2" />
         </div>
       </div>
 
@@ -130,4 +89,89 @@
       </button>
     </div>
   </body>
+  <script>
+    // 파일 미리보기 기능
+    document
+      .getElementById("fileInput")
+      .addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("profilePreview").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+    // 회원가입 유효성 검사 함수
+    function validateSignup() {
+      var name = $("#name").val();
+      var email = $("#email").val();
+      var password = $("#password").val();
+      var passwordConfirm = $("#password_confirm").val();
+
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var passwordRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/;
+
+      if (!name || !email || !password || !passwordConfirm) {
+        alert("모든 항목을 입력해주세요!");
+        return false;
+      }
+      if (!emailRegex.test(email)) {
+        alert("이메일 형식에 맞게 입력해주세요!");
+        return false;
+      }
+      if (!passwordRegex.test(password)) {
+        alert("비밀번호를 다시 입력해주세요!");
+        return false;
+      }
+      if (password !== passwordConfirm) {
+        alert("비밀번호가 일치하지 않습니다!");
+        return false;
+      }
+      return true;
+    }
+
+    // 회원가입 핸들러
+    function signup() {
+      // 1. 유효성 검사 실행
+      if (!validateSignup()) {
+        return;
+      }
+      // 2. 유저가 입력한 데이터 가져오기
+      let formData = new FormData();
+      formData.append("name", $("#name").val());
+      formData.append("email", $("#email").val());
+      formData.append("password", $("#password").val());
+
+      let fileInput = document.getElementById("fileInput");
+      if (fileInput.files.length > 0) {
+        formData.append("profile_image", fileInput.files[0]);
+      }
+
+      // 3. signup 요청하기
+      $.ajax({
+        type: "POST",
+        url: "/api/signup",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          if (response["result"] == "fail") {
+            alert(response["message"]);
+          }
+          if (response["result"] == "success") {
+            alert("회원가입 성공!");
+
+            // 로그인 페이지 이동
+            window.location.href = "/signin";
+          } else {
+            alert("다시 입력해주세요!");
+          }
+        },
+      });
+    }
+  </script>
 </html>
