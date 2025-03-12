@@ -8,7 +8,7 @@ bcrypt = Bcrypt() # Bcrypt 인스턴스 생성
 users = db.users  # 유저 컬렉션
 
 # 회원가입 시 유저 생성 및 비밀번호 해싱
-def create_user(name, email, password):
+def create_user(name, email, password, profile_image_url):
     # 비밀번호 암호화
     password_hash = bcrypt.generate_password_hash(password)
 
@@ -16,6 +16,7 @@ def create_user(name, email, password):
         "name": name,
         "email": email,
         "password": password_hash,
+        "profile_image": profile_image_url,  # 프로필 사진 필드 추가
         "joined_challenges": []
     }
     return users.insert_one(user).inserted_id # 유저 생성 후 ID 반환
