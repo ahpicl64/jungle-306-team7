@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from flask import Blueprint, Flask, render_template, jsonify, request
 from bson import ObjectId
 from pymongo import MongoClient
@@ -189,3 +190,64 @@ def get_challenges():
 
     return render_template("index.html", challenges=challenges_data,all_challenges=all_challenges)
 
+#  -- 이미지 파일 업로드 세팅 --
+UPLOAD_FOLDER = "static/challenge" # 프로필 사진을 업로드할 폴더 지정
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"} # 허용할 파일 확장자
+
+# 폴더가 없으면 생성
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+# 확장자 체크 함수
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# 챌린지 인증하기 선택시 당일자 인증 기능
+@challenge_routes.route("/api/challenge/verification", methods=["POST"])
+def verificate_challenge():
+    # 챌린지 ID 및 사용자 ID 가져오기
+    challenge_id = request.form.get("challenge_id")
+    user_id = request.cookies.get("user_id")
+
+    # 오늘 날짜 확인 (YYYY-MM-DD 형식)
+    today_date = datetime.now().strftime("%Y-%m-%d")
+
+    # 챌린지 참여자의 기존 인증 내역 확인
+    challenge = challenges.find_one(
+        {
+            "_id": ObjectId(challenge_id), 
+            "participants.participant_id": user_id
+        },
+        {"participants.$": 1}  # 해당 user_id의 참여 정보만 가져오기
+    )
+
+    if not challenge or "participants" not in challenge:
+        return jsonify({"result": "fail", "message": "참여 정보를 찾을 수 없습니다."})
+
+    participant = challenge["participants"][0]  # 해당 사용자의 참여 정보
+
+    # 오늘자 인증이 기존에 수행되었는지 확인
+    for photo in participant.get("verification_image", []):
+        if photo["date"] == today_date:
+            return jsonify({"result": "fail", "message": "오늘 인증은 이미 완료되었습니다!"})
+
+    # 인증 사진 이미지 처리
+    challenge_image = request.files.get("challenge_image")
+
+    if challenge_image and allowed_file(challenge_image.filename):
+        file_path = os.path.join(UPLOAD_FOLDER, challenge_image.filename)
+        challenge_image.save(file_path)
+
+    # MongoDB 업데이트 (count 증가, 인증 정보 추가)
+    result = challenges.update_one(
+        {"_id": ObjectId(challenge_id), "participants.participant_id": user_id},  # 해당 유저의 데이터 찾기
+        {
+            "$inc": {"participants.$.verification_count": 1},  # count 1 증가
+            "$push": {"participants.$.verification_image": {"photo_url": file_path, "date": today_date}}
+        }
+    )
+
+    if result.modified_count > 0:
+        return jsonify({"result": "success"})
+    else:
+        return jsonify({"result": "fail", "message": "인증에 실패했습니다."}), 400

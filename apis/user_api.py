@@ -30,7 +30,7 @@ def signin_proc():
         return jsonify({'result': "failure"})
 
 
-UPLOAD_FOLDER = "static/uploads" # 프로필 사진을 업로드할 폴더 지정
+UPLOAD_FOLDER = "static/profile" # 프로필 사진을 업로드할 폴더 지정
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"} # 허용할 파일 확장자
 
 # 폴더가 없으면 생성
