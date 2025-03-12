@@ -22,20 +22,27 @@ def generate_challenge():
 
     duration = get_duration(start_date_receive, end_date_receive)
 
+    host_user_id : request.cookies.get("user_id")
+
+    #챌린지 추최자의 정보 획득
+    participant_data = find_user_data(host_user_id)
+
     challenge = {
         "name": name_receive,
-        "host_user_id": request.cookies.get("user_id"),
+        "host_user_id": host_user_id,
         "start_date": start_date_receive,
         "end_date": end_date_receive,
         "duration": duration,
         "details": details_receive,
         "verification_method": verification_method_receive,
         "bet_required": bet_required_receive,
-        "participants": [],
+        "participants": [participant_data],
     }
 
+    join_challenge()
+
     challenge_id = db.challenges.insert_one(challenge).inserted_id
-    return jsonify({"result": "success", 'challenge_id': str(challenge_id)})
+    return jsonify({"result": "success"},{'challenge_id':str(challenge_id)})
 
 
 def get_duration(start_date_str, end_date_str):
@@ -65,3 +72,34 @@ def detail(id):
     # id가 일치하는 challenge를 detail.html로 render해서 challenge로 보냄
     return render_template("chal_detail.html", challenge=challenge)
 
+
+# 유저 id 참조, 데이터(이름, 프로필 사진) 조회하는 기능 
+def find_user_data(id):
+    #user collection 내 일치하는 id 조회, 해당되는 id의 이름, 프로필 사진 가져오기
+    user = db.user.find_one({"_id":ObjectId(id)}, {"name": 1, "profile_image": 1})
+
+    #참가자 정보 결합
+    participant_data = {
+        "participant_id": id,
+        "name": user["name"],
+        "profile_image": user["profile_image"],
+        "count": 0,
+        "verification_image" : [
+            # 추후 구현 : 인증하기 클릭 후 조작시 인증사진, today data 배열로 추가하는 기능
+        ]
+    }
+
+    return participant_data
+
+
+# 유저 조회하여 해당하는 데이터를 추가하는 기능
+@challenge_routes.route("/api/challenge/join", methods=["POST"])
+def join_challenge():
+    data = request.json
+
+    challenge_id = data.get("challenge_id")
+    user_id = request.cookies.get("user_id")
+
+    participant_data = find_user_data(user_id)
+    if not participant_data:
+        return jsonify

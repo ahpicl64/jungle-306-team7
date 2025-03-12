@@ -34,6 +34,8 @@
 
         // 회원가입 핸들러
         function generateChallenge() {
+            let challenge_id = ''
+
             // 입력한 데이터 가져오기
             let name = $("#name").val();
             let start_date = $("#start_date").val();
@@ -54,15 +56,8 @@
                     details: details, 
                     verification_method: verification_method, 
                     bet_required: bet_required,
-                }), // JSON 변환
-            //     success: function (response){
-            //         if (response["result"] == "success"){
-            //             alert("챌린지 생성이 완료되었습니다.")
-            //             // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
-            //             console.log(response);
-            //         }
-            //     }
-            // })
+                }), 
+
             }).done(function(response){
                 // 1-1. 챌린지 생성 요청이 성공하였을 때
                 if (response["result"] == "success"){
@@ -99,30 +94,6 @@
                 })
         }
 
-        // {
-        //     "_id": "65f67890abc12345def67890",
-        //         "name": "아침 기상 챌린지", (string)
-        //     "host_user_id": "65f12345abc67890def12345",
-        //         "start_date": date 형식,
-        //             "end_date": date 형식,
-        //                 "duration": 30(int),
-        //                     "details": "매일 아침 7시 기상 인증하기"(string),
-        //                         "verification_method": "사진 업로드"(string),
-        //                             "bet_required": true(bool),
-        //                                 "participants": [
-        //                                     {
-        //                                         "user_id": "65f11111abc22222def33333",
-        //                                         "verifications": {
-        //                                             "count": 2,
-        //                                             "photos": [
-        //                                                 { "photo_url": "https://img.com/1.jpg", "date": "2025-03-10" },
-        //                                                 { "photo_url": "https://img.com/2.jpg", "date": "2025-03-11" },
-        //                                                 ...
-        //   ]
-        //                                         }
-        //                                     }
-        //                                 ]
-        // }
     </script>
 </head>
 
