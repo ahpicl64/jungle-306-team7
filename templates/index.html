@@ -180,7 +180,7 @@
               <!-- 제목과 인원 -->
               <div class="d-grid">
                 <h2 class="fs-6 fw-bold">{{challenge.name}}</h2>
-                <p class="text-muted">{{ challenge.participants or [] | length }}명 참여 중</p>
+                <p class="text-muted">{{ challenge.participants | length }}명 참여 중</p>
               </div>
               <!-- 사용자 프로필 사진 -->
               <div class="d-flex align-items-center gap-3">
