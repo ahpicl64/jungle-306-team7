@@ -1,10 +1,9 @@
-from flask import Blueprint, request, jsonify
-from bson import ObjectId
-from flask_jwt_extended import create_access_token
-from models.user_model import create_user, get_user_by_email, find_user
 import datetime
 import os
-from werkzeug.utils import secure_filename
+from bson import ObjectId
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token
+from models.user_model import create_user, get_user_by_email, find_user, join_challenge
 
 auth_routes = Blueprint('auth', __name__)  # 블루프린트 생성
 
@@ -61,3 +60,11 @@ def signup_proc():
     user_id = create_user(name, email, password, file_path)
 
     return jsonify({"result": "success", "user_id": str(user_id)})
+
+# === 참여한 챌린지 추가 API ===
+@auth_routes.route("/api/user-challenge/join", methods=['POST'])
+def join_challenge_proc():
+    challenge_id = request.json.get('challenge_id')
+    
+    if challenge_id and join_challenge(challenge_id):
+        return jsonify({"result": "success", "message": "챌린지 참여 완료!"})
