@@ -1,59 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
 
-    <!-- JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
-    <!-- 폰트어썸 -->
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
-    ></script>
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
 
-    <!-- 구글폰트 -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
-      rel="stylesheet"
-    />
-    <title>커피챌</title>
-    <script>
-      //챌린지 상세 페이지로 넘어가는 함수
-      function gotodetail(id) {
-                window.location.href = `/challenge/${id}`
-      }
-      //챌린지 생성 페이지로 넘어가는 함수
-      function generate_chal() {
+  <!-- 폰트어썸 -->
+  <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
 
-        window.location.href = "/generate"
-      }
-      // ** 쿠키 정보를 가져오는 함수 **
-      function getCookie(name) {
-        var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-        return value ? value[2] : null;
-      }
+  <!-- 구글폰트 -->
+  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet" />
+  <title>커피챌</title>
+  <script>
+    //챌린지 상세 페이지로 넘어가는 함수
+    function gotodetail(id) {
+      window.location.href = `/challenge/${id}`
+    }
+    //챌린지 생성 페이지로 넘어가는 함수
+    function generate_chal() {
 
-      $(document).ready(function () {
-        // 1. 토큰이 없으면 비회원 화면 띄우기
-        var temp_html = `
+      window.location.href = "/generate"
+    }
+    // ** 쿠키 정보를 가져오는 함수 **
+    function getCookie(name) {
+      var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+      return value ? value[2] : null;
+    }
+
+    $(document).ready(function () {
+      // 1. 토큰이 없으면 비회원 화면 띄우기
+      var temp_html = `
         <div class="d-flex flex-column w-100">
         <br />
         <br />
@@ -78,168 +64,143 @@
         <br />
       </div>
       `;
-        let token = getCookie("access_token");
-        if (!token) {
-          $("#user-status").html(temp_html);
-        }
-        // 2. 회원이라면 사용자 이름을 UI에 적용하기
-        else {
-          $("#user-name").html(getCookie("name"));
-        }
-      });
-
-      // ** 챌린지 더보기 클릭시, 해당 화면으로 이동하는 함수 **
-      function gotoChalList() {
-        let token = getCookie("access_token");
-        if (!token) {
-          alert("로그인이 필요해요!");
-        } else {
-          location.href = "/challenge"; // 챌린지 목록 페이지로 이동
-        }
+      let token = getCookie("access_token");
+      if (!token) {
+        $("#user-status").html(temp_html);
       }
-    </script>
-  </head>
+      // 2. 회원이라면 사용자 이름을 UI에 적용하기
+      else {
+        $("#user-name").html(getCookie("name"));
+      }
+    });
 
-  <body>
-    <div class="d-flex flex-column py-3 px-4 vh-100">
-      
-      <!--페이지 제목-->
-      <div class="fs-5 mb-4 fw-semibold">커피챌</div>
-      <br />
+    // ** 챌린지 더보기 클릭시, 해당 화면으로 이동하는 함수 **
+    function gotoChalList() {
+      let token = getCookie("access_token");
+      if (!token) {
+        alert("로그인이 필요해요!");
+      } else {
+        location.href = "/challenge"; // 챌린지 목록 페이지로 이동
+      }
+    }
+  </script>
+</head>
 
-      <div id="user-status">
-        <!--회원이 참여 중인 챌린지 목록 문구-->
-        <div class="d-flex w-100 fw-semibold px-2 mb-4">
-          <span id="user-name">길동</span>님이 참여 중인 챌린지
-        </div>
-        
-        {% if challenges %}
-        <!-- 참여 중인 챌린지 목록 -->
-        <div class="px-2 d-flex flex-column gap-3">
-          {% for challenge in challenges %}
-          <div
-            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-            style="border-color: #4ade80 !important; width: 100%"
-          >
-            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-            <div class="d-flex align-items-center gap-2">
-              <p class="mb-0">{{ challenge.name }}</p>
-              <p class="text-muted fs-6 mb-0">{{challenge.count}}/{{challenge.duration}}</p>
-            </div>
+<body>
+  <div class="d-flex flex-column py-3 px-4 vh-100">
 
-            <!-- 오른쪽: 인증 버튼 -->
-            <button
-              class="btn text-white px-2 py-2 rounded-pill small"
-              style="background-color: #4ade80"
-            >
-              인증하러 가기
-            </button>
-          </div>
-          {% endfor %}
-          
+    <!--페이지 제목-->
+    <div class="fs-5 mb-4 fw-semibold">커피챌</div>
+    <br />
 
-          
-
-          <!--더보기 버튼(3개 이상일 때만 보이게 설정)-->
-          {% if 
-             challenges|length >= 3 %}
-          <div class="d-flex justify-content-end">
-            <button
-              type="button"
-              class="text-dark rounded-pill small"
-              style="background-color: rgb(243, 243, 243); border: none"
-              onclick="gotoChalList()"
-            >
-              더보기
-            </button>
-          </div>
-          {% endif %}
-        </div>
-
-        {% else %}
-        <!--챌린지가 없을 때-->
-        <div class="d-flex flex-column w-100 text-center mt-4">
-          <p class="fs-5 text-muted">참여 중인 챌린지가 없습니다.</p>
-        </div>
-        {% endif %}
+    <div id="user-status">
+      <!--회원이 참여 중인 챌린지 목록 문구-->
+      <div class="d-flex w-100 fw-semibold px-2 mb-4">
+        <span id="user-name">길동</span>님이 참여 중인 챌린지
       </div>
 
-      <br />
-      <br />
-
-      <!--전체 챌린지-->
-      <div class="px-2 d-flex flex-column gap-2">
-        <!--문구-->
-        <div class="d-flex w-100 fw-semibold mb-3">전체 챌린지</div>
-
-        <!--진행 중인 챌린지 목록 -->
-        {% if all_challenges %}
-        <div class="row gx-2 gy-3">
-          {% for challenge in all_challenges %}
-          <!-- 첫 번째 카드 -->
-          <div class="col-6 col-md-6 " onclick="gotodetail('{{challenge._id}}')">
-            <div
-              class="border p-3 rounded"
-              style="background-color: #4ade80; height: 120px"
-            >
-              <!-- 제목과 인원 -->
-              <div class="d-grid">
-                <h2 class="fs-6 fw-bold">{{challenge.name}}</h2>
-                <p class="text-white">{{ challenge.participants | length }}명 참여 중</p>
-              </div>
-              <!-- 사용자 프로필 사진 -->
-              <div class="d-flex align-items-center gap-3">
-                <img
-                  id="profilePreview"
-                  src=""
-                  class="rounded-circle bg-light border"
-                  width="30"
-                  height="30"
-                  alt="사용자 프로필"
-                />
-                <img
-                  id="profilePreview"
-                  src=""
-                  class="rounded-circle bg-light border"
-                  width="30"
-                  height="30"
-                  alt="사용자 프로필"
-                />
-                <img
-                  id="profilePreview"
-                  src=""
-                  class="rounded-circle bg-light border"
-                  width="30"
-                  height="30"
-                  alt="사용자 프로필"
-                />
-              </div>
-            </div>
+      {% if challenges %}
+      <!-- 참여 중인 챌린지 목록 -->
+      <div class="px-2 d-flex flex-column gap-3">
+        {% for challenge in challenges %}
+        <div class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
+          style="border-color: #4ade80 !important; width: 100%">
+          <!-- 왼쪽: 챌린지 제목 & 진행률 -->
+          <div class="d-flex align-items-center gap-2">
+            <p class="mb-0">{{ challenge.name }}</p>
+            <p class="text-muted fs-6 mb-0">{{challenge.count}}/{{challenge.duration}}</p>
           </div>
-          {% endfor %}
-        </div>
 
+          <!-- 오른쪽: 인증 버튼 -->
+          <button class="btn text-white px-2 py-2 rounded-pill small" style="background-color: #4ade80">
+            인증하러 가기
+          </button>
+        </div>
+        {% endfor %}
+
+
+
+
+        <!--더보기 버튼(3개 이상일 때만 보이게 설정)-->
+        {% if
+        challenges|length >= 3 %}
         <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            class="text-dark rounded-pill small"
-            style="background-color: rgb(243, 243, 243); border: none"
-            onclick="gotoChalList()"
-          >
+          <button type="button" class="text-dark rounded-pill small"
+            style="background-color: rgb(243, 243, 243); border: none" onclick="gotoChalList()">
             더보기
           </button>
         </div>
-
-        {% else %}
-        <!--챌린지가 없을 때-->
-        <p class="fs-5 text-muted text-center mt-4">진행 중인 챌린지가 없습니다.</p>
-        <button type="button" class="position-fixed bg-light text-dark rounded-circle shadow"
-              style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none;"
-              onclick="generate_chal()">
-              <i class="fas fa-plus fa-lg"></i>
-        </button>
         {% endif %}
       </div>
+
+      {% else %}
+      <!--챌린지가 없을 때-->
+      <div class="d-flex flex-column w-100 text-center mt-4">
+        <p class="fs-5 text-muted">참여 중인 챌린지가 없습니다.</p>
+      </div>
+      {% endif %}
     </div>
-  </body>
+
+    <br />
+    <br />
+
+    <!--전체 챌린지-->
+    <div class="px-2 d-flex flex-column gap-2">
+      <!--문구-->
+      <div class="d-flex w-100 fw-semibold mb-3">전체 챌린지</div>
+
+      <!--진행 중인 챌린지 목록 -->
+      {% if all_challenges %}
+      <div class="row gx-2 gy-3">
+        {% for challenge in all_challenges %}
+        <!-- 첫 번째 카드 -->
+        <div class="col-6 col-md-6 " onclick="gotodetail('{{challenge._id}}')">
+          <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px">
+            <!-- 제목과 인원 -->
+            <div class="d-grid">
+              <h2 class="fs-6 fw-bold">{{challenge.name}}</h2>
+              <p class="text-white">{{ challenge.participants | length }}명 참여 중</p>
+            </div>
+            <!-- 사용자 프로필 사진 -->
+            <div class="d-flex align-items-center gap-3">
+              <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30"
+                alt="사용자 프로필" />
+              <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30"
+                alt="사용자 프로필" />
+              <img id="profilePreview" src="" class="rounded-circle bg-light border" width="30" height="30"
+                alt="사용자 프로필" />
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="button" class="text-dark rounded-pill small"
+          style="background-color: rgb(243, 243, 243); border: none" onclick="gotoChalList()">
+          더보기
+        </button>
+      </div>
+
+      {% else %}
+      <!--챌린지가 없을 때-->
+      <p class="fs-5 text-muted text-center mt-4">진행 중인 챌린지가 없습니다.</p>
+      <button type="button" class="position-fixed bg-light text-dark rounded-circle shadow"
+        style="width: 50px; height: 50px; bottom: 20px; right: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none;"
+        onclick="generate_chal()">
+        <i class="fas fa-plus fa-lg"></i>
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  
+  <script>
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  </script>
+</body>
+
 </html>
