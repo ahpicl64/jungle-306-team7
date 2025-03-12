@@ -24,8 +24,8 @@
     <title>챌린지 목록</title>
     <script>
 
-        function main(){//메인 페이지로 이동
-             window.location.href="/"
+        function main() {//메인 페이지로 이동
+            window.location.href = "/"
         }
     </script>
 
@@ -41,7 +41,7 @@
                         <i class="fa-solid fa-chevron-left text-dark fa-lg"></i> <!-- 왼쪽 화살표 아이콘 -->
                     </span>
                 </button>
-               나의 챌린지 목록
+                나의 챌린지 목록
             </div>
 
             <!-- 챌린지 목록 카드 -->
@@ -132,14 +132,20 @@
             </div>
 
 
-            
+
 
 
 
         </div>
     </div>
-    
-        
+
+    <script>
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 
 </html>

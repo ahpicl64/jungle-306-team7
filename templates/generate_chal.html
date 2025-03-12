@@ -28,7 +28,7 @@
 
 
     <script>
-      
+
 
         // 회원가입 핸들러
         function generateChallenge() {
@@ -50,15 +50,15 @@
                 data: JSON.stringify({
                     name: name,
                     start_date: start_date,
-                    end_date: end_date, 
-                    details: details, 
-                    verification_method: verification_method, 
+                    end_date: end_date,
+                    details: details,
+                    verification_method: verification_method,
                     bet_required: bet_required,
-                }), 
+                }),
 
-            }).done(function(response){
+            }).done(function (response) {
                 // 1-1. 챌린지 생성 요청이 성공하였을 때
-                if (response["result"] == "success"){
+                if (response["result"] == "success") {
                     alert("챌린지 생성이 완료되었습니다.")
                     // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
                     console.log(response);
@@ -71,25 +71,27 @@
                         contentType: "application/json",
                         data: JSON.stringify({
                             challenge_id: challenge_id
-                        })}).done(function(response){
-                            // 2-1. 유저 컬렉션에 추가를 성공하였을 때
-                            if (response["result"] == "success"){
-                                console.log('유저 컬렉션 챌린지 업데이트 성공');
-                            } else{
-                            // 2-2. 유저 컬렉션 추가 요청이 fail 응답일 경우
-                                alert('챌린지 참여 중 오류가 발생했습니다.')
-                            }
-                        }).fail(function(){
-                            // 2-3. 유저 컬렉션 추가 요청에 실패하였을 경우
-                            alert('챌린지 참여 중 오류가 발생했습니다.')
                         })
+                    }).done(function (response) {
+                        // 2-1. 유저 컬렉션에 추가를 성공하였을 때
+                        if (response["result"] == "success") {
+                            console.log('유저 컬렉션 챌린지 업데이트 성공');
+                        } else {
+                            // 2-2. 유저 컬렉션 추가 요청이 fail 응답일 경우
+                            alert('챌린지 참여 중 오류가 발생했습니다.')
+                        }
+                    }).fail(function () {
+                        // 2-3. 유저 컬렉션 추가 요청에 실패하였을 경우
+                        alert('챌린지 참여 중 오류가 발생했습니다.')
+                    })
                 } else {
                     // 1.2. 챌린지 요청에 응답이 fail일 경우
                     alert('챌린지 생성에 실패했습니다.')
-                }}).fail(function(){
-                    // 1.3. 챌린지 요청에 실패하였을 경우
-                    alert('챌린지 생성에 실패했습니다.')
-                })
+                }
+            }).fail(function () {
+                // 1.3. 챌린지 요청에 실패하였을 경우
+                alert('챌린지 생성에 실패했습니다.')
+            })
         }
 
     </script>
@@ -117,43 +119,51 @@
             <!-- 기간 -->
             <div>
                 <p>기간</p>
-                    시작 날짜 <input id="start_date" type="date">
-                    <br>
-                    종료 날짜 <input id="end_date" type="date">
-                </div>
+                시작 날짜 <input id="start_date" type="date" max="9999-12-31">
+                <br>
+                종료 날짜 <input id="end_date" type="date" max="9999-12-31">
             </div>
-
-            <!-- 세부내용 -->
-            <div class="flex flex-row w-full justify-between items-center">
-                <p>챌린지 세부내용</p>
-            </div>
-            <input id="details" class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
-                placeholder="챌린지 내용을 입력해주세요.">
-            </input>
-
-            <!-- 인증방법 설명 -->
-            <div>
-                <p>인증방법</p>
-                <input id="verification_method" class="w-full h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
-                    placeholder="인증 방법을 입력해주세요.">
-                </input>
-            </div>
-
-            <!-- 커피내기 유무 체크박스 -->
-            <div class="flex flex-row w-full items-center gap-1">
-                <input id="bet_required" type="checkbox">
-                <p>커피내기를 하시겠어요? 😜</p>
-            </div>
-
-
         </div>
+
+        <!-- 세부내용 -->
+        <div class="flex flex-row w-full justify-between items-center">
+            <p>챌린지 세부내용</p>
+        </div>
+        <input id="details" class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
+            placeholder="챌린지 내용을 입력해주세요.">
+        </input>
+
+        <!-- 인증방법 설명 -->
+        <div>
+            <p>인증방법</p>
+            <input id="verification_method"
+                class="w-full h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
+                placeholder="인증 방법을 입력해주세요.">
+            </input>
+        </div>
+
+        <!-- 커피내기 유무 체크박스 -->
+        <div class="flex flex-row w-full items-center gap-1">
+            <input id="bet_required" type="checkbox">
+            <p>커피내기를 하시겠어요? 😜</p>
+        </div>
+
+
+    </div>
     </div>
 
     <!-- 만들기 버튼 -->
     <div class="fixed bottom-5 w-full flex flex-col items-center">
         <button onclick="generateChallenge()" class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">만들기</button>
     </div>
+    <script>
 
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 
 </html>
