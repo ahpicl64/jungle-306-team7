@@ -1,168 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- fontawsome -->
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"
-    ></script>
+    <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
 
     <!-- tailwind css -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
     <!-- JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
 
     <!-- 구글폰트 -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet" />
 
     <title>커피챌 | 챌린지 세부사항| {{challenge.name}}</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="flex flex-col py-7 px-6 h-screen">
-      <!-- 챌린지 헤드라인 -->
-      <div class="mb-12 text-xl font-semibold">
-        <button class="mr-3" type="button" onclick="main()">
-          <span>
-            <i class="fa-solid fa-chevron-left" a="index.html"></i>
-          </span>
-        </button>
-        {{challenge.name}}
-      </div>
-
-      <!-- 챌린지 정보 -->
-      <div class="px-3 flex flex-col gap-2">
-        <!-- 기간 -->
-        <div class="flex flex-row justify-between">
-          <p>기간</p>
-          <p><span>{{challenge.start_date}}</span> ~ {{challenge.end_date}}</p>
+        <!-- 챌린지 헤드라인 -->
+        <div class="mb-12 text-xl font-semibold">
+            <button class="mr-3" type="button" onclick="main()">
+                <span>
+                    <i class="fa-solid fa-chevron-left" a="index.html"></i>
+                </span>
+            </button>
+            {{challenge.name}}
         </div>
 
-        <!-- 작성자 -->
-        <div class="flex flex-row justify-between">
-          <p>주최자</p>
-          <p id="organizer">{{challenge.host_user_id}}</p>
-        </div>
+        <!-- 챌린지 정보 -->
+        <div class="px-3 flex flex-col gap-2">
+            <!-- 기간 -->
+            <div class="flex flex-row justify-between">
+                <p>기간</p>
+                <p><span>{{challenge.start_date}}</span> ~ {{challenge.end_date}}</p>
+            </div>
 
-        <!-- 세부내용 -->
-        <div class="flex flex-row w-full justify-between items-center">
-          <p>챌린지 세부내용</p>
-          {% if challenge.bet_required %}
-          <p class="text-xs text-gray-500">
-            <i class="fas fa-coffee"></i> 해당 챌린지는 커피내기 챌린지입니다.
-          </p>
-          {% endif %}
-        </div>
-        <textarea
-          class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
-        >
+            <!-- 작성자 -->
+            <div class="flex flex-row justify-between">
+                <p>주최자</p>
+                <p id="organizer">{{challenge.host_user_id}}</p>
+            </div>
+
+            <!-- 세부내용 -->
+            <div class="flex flex-row w-full justify-between items-center">
+                <p>챌린지 세부내용</p>
+                {% if challenge.bet_required %}
+                <p class="text-xs text-gray-500">
+                    <i class="fas fa-coffee"></i> 해당 챌린지는 커피내기 챌린지입니다.
+                </p>
+                {% else %}
+                <p class="text-xs text-gray-500">
+                    <i class="fas fa-coffee"></i> 해당 챌린지는 커피내기 챌린지가 아닙니다.
+                </p>
+                {% endif %}
+            </div>
+            <textarea class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md">
                 {{challenge.details}}
-            </textarea
-        >
+            </textarea>
 
-        <!-- 참가자 리스트 -->
-        <div class="flex flex-row w-full justify-start">
-          <p>참여자 {{challenge.participants | length}}명</p>
-        </div>
-        <div
-          class="flex flex-col h-40 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
-        >
-          <table class="table-auto">
-            <thead>
-              <tr>
-                <th>프로필</th>
-                <th>이름</th>
-                <th>인증 횟수</th>
-                <th>순위</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%for participants in challenge%}
-              <tr>
-                <td>
-                  <img src="{{challenge.participants.profile_image}}" alt="" />
-                </td>
-                <td>{{challenge.participants.name}}</td>
-                <td>{{challenge.count}}</td>
-                <td>{{challenge.participants.rank}}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+            <!-- 참가자 리스트 -->
+            <div class="flex flex-row w-full justify-start">
+                <p>참여자 {{challenge.participants | length}}명</p>
+            </div>
+            <div class="flex flex-col h-40 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th>프로필</th>
+                            <th>이름</th>
+                            <th>인증 횟수</th>
+                            <th>순위</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for participants in challenge.participants%}
+                        <tr>
+                            <td>
+                                <img style="width: 2.5rem; height: 2.5rem; border-radius: 100px;" src="{{participants.profile_image}}" alt="" />
+                            </td>
+                            <td>{{participants.name}}</td>
+                            <td>{{participants.verification_count}}</td>
+                            <td>{{participants.rank}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- 인증방법 설명 -->
-        <div>
-          <h3>인증방법</h3>
-          <div
-            class="flex flex-col h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
-          >
-            {{challenge.verification_method}}
-          </div>
+            <!-- 인증방법 설명 -->
+            <div>
+                <h3>인증방법</h3>
+                <div class="flex flex-col h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md">
+                    {{challenge.verification_method}}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <!-- 참여하기 또는 인증/포기하기 버튼 -->
-    <!-- 추후 로그인 유무에 따라 function으로 삭제 또는 나타나게 구현 -->
-    <!-- <div class="fixed bottom-5 w-full flex flex-col items-center">
-        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">참여하기</button>
-    </div> -->
-    <div
-      class="fixed bottom-5 w-full flex flex-row gap-3 items-center justify-center"
-    >
-      <button class="bg-green-400 rounded-[10px] w-[33%] h-13 text-lg">
-        인증하기
-      </button>
-      <button
-        class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg"
-      >
-        포기하기
-      </button>
+    <!-- 참여중인 사용자는 인증/포기하기 버튼 노출 -->
+    {% if has_participated %}
+    <div class="fixed bottom-5 w-full flex flex-row gap-3 items-center justify-center">
+        <button class="bg-green-400 rounded-[10px] w-[33%] h-13 text-lg">
+            인증하기
+        </button>
+        <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg">
+            포기하기
+        </button>
     </div>
+
+    <!-- 참여중이 아닐경우 참여하기 버튼 노출 -->
+    {% else %}
+    <div class="fixed bottom-5 w-full flex flex-col items-center">
+        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg" onclick = "join_challenge()">참여하기</button>
+    </div>
+    {% endif %}
 
     <script>
-      $(document).ready(function () {
-        // 템플릿에서 ID 가져오기
-        let hostUserId = "{{ challenge.host_user_id }}";
+        $(document).ready(function () {
+            // 템플릿에서 ID 가져오기
+            let hostUserId = "{{ challenge.host_user_id }}";
 
-        $.ajax({
-          type: "GET",
-          url: "/api/user/" + hostUserId,
-          success: function (response) {
-            if (response.result === "success") {
-              console.log(response);
+            $.ajax({
+                type: "GET",
+                url: "/api/user/" + hostUserId,
+                success: function (response) {
+                    if (response.result === "success") {
+                        console.log(response);
 
-              $("#organizer").text(response.name); // 이름 업데이트
-            } else {
-              $("#organizer").text("알 수 없음");
-            }
-          },
-          error: function () {
-            $("#organizer").text("알 수 없음");
-          },
+                        $("#organizer").text(response.name); // 이름 업데이트
+                    } else {
+                        $("#organizer").text("알 수 없음");
+                    }
+                },
+                error: function () {
+                    $("#organizer").text("알 수 없음");
+                },
+            });
         });
-      });
 
-      //메인 페이지로 이동
-      function main() {
-        window.location.href = "/";
-      }
+        
+        //메인 페이지로 이동
+        function main() {
+            window.location.href = "/";
+        }
+
+        //참가하기 기능
+        function join_challenge() {
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/join",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id}),
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("참여 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("참여 실패")
+                    }
+                }
+            })
+        }
+
+        // python 내 api 없음 추후 구현
+        function verification_callenge(){
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/verification",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id
+                }),
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        // 인증하기 모달 팝업, 파일 업로드, 컬렉션 저장(인증사진, 데이트) 실행
+                        alert("인증 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("인증 실패")
+                    }
+                }
+            })
+        }
     </script>
-  </body>
+</body>
+
 </html>

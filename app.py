@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 from apis.user_api import auth_routes
 from apis.challenge_api import challenge_routes
 
+
 app = Flask(__name__)
 
 # === MongoDB 설정 ===
