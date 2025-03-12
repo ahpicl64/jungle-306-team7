@@ -5,7 +5,7 @@ from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client.jungle7
-user_collection = db.user
+users = db.users
 challenges = db.challenges  # 챌린지 컬렉션
 challenge_routes = Blueprint("challenge", __name__)  # 블루프린트 생성
 
@@ -69,27 +69,30 @@ def challenge_list():
 def detail(id):
     # challenges 내의 "_id"중 받아온 id와 일치하는지 확인(이때 ObjectId로 형변환)
     challenge = challenges.find_one({"_id": ObjectId(id)})
-
+    user_id = request.cookies.get("user_id")
+    participation = check_participation(challenge, user_id)
     # id가 일치하는 challenge를 detail.html로 render해서 challenge로 보냄
-    return render_template("chal_detail.html", challenge=challenge)
+    return render_template("chal_detail.html", challenge=challenge, has_participated=participation)
 
 # 참가자 목록과 사용자 id를 대조하여 챌린지 참가여부 검증 기능
-def check_participation(user_id):
-    result = challenges.find_one({"participant.participant_id": user_id})
-    return bool(result)
+def check_participation(challenge, user_id):
+    for participant in challenge.get("participants", []):
+        if participant.get("participant_id") == user_id:
+            return True
+    return False
     
 
 # 유저 id 참조, 데이터(이름, 프로필 사진) 조회하는 기능
 def find_user_data(id):
     # user collection 내 일치하는 id 조회, 해당되는 id의 이름, 프로필 사진 가져오기
-    user = user_collection.find_one({"_id": ObjectId(id)}, {"name": 1, "profile_image": 1})
+    user = users.find_one({"_id": ObjectId(id)}, {"name": 1, "profile_image": 1})
 
     # 참가자 정보 결합
     participant_data = {
         "participant_id": id,
         "name": user["name"],
         "profile_image": user["profile_image"],
-        "count": 0,
+        "verification_count": int(0),
         "verification_image": [
             # 추후 구현 : 인증하기 클릭 후 조작시 인증사진, today data 배열로 추가하는 기능
         ],
