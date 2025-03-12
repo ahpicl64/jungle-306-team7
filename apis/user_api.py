@@ -1,9 +1,10 @@
 import datetime
 import os
 from bson import ObjectId
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
-from models.user_model import create_user, get_user_by_email, find_user, join_challenge
+from flask import Blueprint, request, jsonify, make_response
+from flask_jwt_extended import create_access_token, set_access_cookies
+from flask_jwt_extended import jwt_required
+from models.user_model import create_user, get_user_by_email, find_user, join_challenge, search_user
 
 auth_routes = Blueprint('auth', __name__)  # 블루프린트 생성
 
@@ -17,12 +18,21 @@ def signin_proc():
 
     if user_info:
         access_token = create_access_token(identity=str(user_info['_id']), expires_delta=datetime.timedelta(hours=2)) # 만료 시간(2시간 후)
-        return jsonify({
+        
+        response = make_response(jsonify({
             'result': "success",
-            'access_token': access_token,
             'name': user_info['name'],
             'user_id': str(user_info['_id'])
-        })
+        }))
+
+        set_access_cookies(response, access_token)
+        return response
+        # return jsonify({
+        #     'result': "success",
+        #     'access_token': access_token,
+        #     'name': user_info['name'],
+        #     'user_id': str(user_info['_id'])
+        # })
     else:
         return jsonify({'result': "failure"})
 
@@ -63,8 +73,20 @@ def signup_proc():
 
 # === 참여한 챌린지 추가 API ===
 @auth_routes.route("/api/user-challenge/join", methods=['POST'])
+# @jwt_required()
 def join_challenge_proc():
     challenge_id = request.json.get('challenge_id')
     
     if challenge_id and join_challenge(challenge_id):
         return jsonify({"result": "success", "message": "챌린지 참여 완료!"})
+
+# === 유저의 id를 받으면 유저 이름을 반환하는 함수 ===
+@auth_routes.route("/api/user/<user_id>", methods=['GET'])
+# @jwt_required()
+def get_user_info(user_id):
+    user = search_user(user_id)
+
+    if user:
+        return jsonify({"result": "success", "name": user.get("name", "알 수 없음")})
+    else:
+        return jsonify({"result": "fail", "message": "사용자를 찾을 수 없습니다."}), 404
