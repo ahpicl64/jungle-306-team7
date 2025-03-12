@@ -92,7 +92,7 @@ def find_user_data(id):
         "participant_id": id,
         "name": user["name"],
         "profile_image": user["profile_image"],
-        "verification_count": int(0),
+        "verification_count": 0,
         "verification_image": [
             # 추후 구현 : 인증하기 클릭 후 조작시 인증사진, today data 배열로 추가하는 기능
         ],
@@ -124,10 +124,6 @@ def join_challenge():
         return jsonify({"result": "success"})
     else:
         return jsonify({"result": "fail"}), 400
-
-    participant_data = find_user_data(user_id)
-    if not participant_data:
-        return jsonify
     
 
 #사용자 참여 챌린지 목록 조회 기능

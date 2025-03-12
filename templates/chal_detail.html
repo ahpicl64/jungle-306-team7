@@ -88,7 +88,7 @@
                                 <img style="width: 2.5rem; height: 2.5rem; border-radius: 100px;" src="{{participants.profile_image}}" alt="" />
                             </td>
                             <td>{{participants.name}}</td>
-                            <td>{{participants.verifiation_count}}</td>
+                            <td>{{participants.verification_count}}</td>
                             <td>{{participants.rank}}</td>
                         </tr>
                         {% endfor %}
@@ -119,7 +119,7 @@
     <!-- 참여중이 아닐경우 참여하기 버튼 노출 -->
     {% else %}
     <div class="fixed bottom-5 w-full flex flex-col items-center">
-        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg">참여하기</button>
+        <button class="bg-green-400 rounded-[10px] w-52 h-13 text-lg" onclick = "join_challenge()">참여하기</button>
     </div>
     {% endif %}
 
@@ -146,9 +146,54 @@
             });
         });
 
+        
         //메인 페이지로 이동
         function main() {
             window.location.href = "/";
+        }
+
+        //참가하기 기능
+        function join_challenge() {
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/join",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id}),
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("참여 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("참여 실패")
+                    }
+                }
+            })
+        }
+
+        // python 내 api 없음 추후 구현
+        function verification_callenge(){
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/verification",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id
+                }),
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        // 인증하기 모달 팝업, 파일 업로드, 컬렉션 저장(인증사진, 데이트) 실행
+                        alert("인증 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("인증 실패")
+                    }
+                }
+            })
         }
     </script>
 </body>
