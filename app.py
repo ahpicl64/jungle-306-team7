@@ -11,6 +11,7 @@ from apis.challenge_api import challenge_routes
 app = Flask(__name__)
 
 # === MongoDB 설정 ===
+# client = MongoClient('mongodb://jungle7:jungle7@52.79.226.85:27017/jungle7?authSource=admin')
 client = MongoClient('localhost', 27017)
 db = client.jungle7
 
@@ -65,4 +66,5 @@ def mypage():
 
 if __name__ == '__main__':
     # TODO: 포트 번호 5000으로 변경
+    # app.run('0.0.0.0', port=5000, debug=True)
     app.run('0.0.0.0', port=5001, debug=True)
