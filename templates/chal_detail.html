@@ -85,15 +85,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {%for participants in challenge.participants%}
+                        {%for participant in challenge.participants%}
                         <tr>
                             <td>
                                 <img style="width: 2.5rem; height: 2.5rem; border-radius: 100px"
-                                    src="{{participants.profile_image}}" alt="" />
+                                    src="{{participant.profile_image}}" alt="" />
                             </td>
-                            <td>{{participants.name}}</td>
-                            <td>{{participants.verification_count}}</td>
-                            <td>{{participants.rank}}</td>
+                            <td>{{participant.name}}</td>
+                            <td>{{participant.verification_count}}</td>
+                            <td>{{participant.rank}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -76,9 +76,24 @@ def detail(id):
     challenge = challenges.find_one({"_id": ObjectId(id)})
     user_id = request.cookies.get("user_id")
     participation = check_participation(challenge, user_id)
+
+    # 참가자 목록을 verification_count 기준으로 정렬 (내림차순)
+    ranked_participants = sorted(
+        challenge.get("participants", []), 
+        key=lambda p: p.get("verification_count", 0), 
+        reverse=True
+    )
+
+    # 순위(rank) 추가
+    for rank, participant in enumerate(ranked_participants, start=1):
+        participant["rank"] = rank  # 1부터 시작하는 랭크 부여
+
     # id가 일치하는 challenge를 detail.html로 render해서 challenge로 보냄
     return render_template(
-        "chal_detail.html", challenge=challenge, has_participated=participation
+        "chal_detail.html", 
+        challenge=challenge, 
+        has_participated=participation, 
+        participants=ranked_participants  # 정렬된 참가자 목록 전달
     )
 
 
