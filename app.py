@@ -9,6 +9,9 @@ from apis.challenge_api import challenge_routes
 
 app = Flask(__name__)
 
+app.jinja_env.auto_reload = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 # === MongoDB 설정 ===
 # client = MongoClient('mongodb://jungle7:jungle7@52.79.226.85:27017/jungle7?authSource=admin')
 client = MongoClient('localhost', 27017)

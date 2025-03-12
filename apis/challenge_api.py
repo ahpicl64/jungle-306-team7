@@ -4,6 +4,7 @@ import uuid
 from flask import Blueprint, Flask, render_template, jsonify, request
 from bson import ObjectId
 from pymongo import MongoClient
+from models.user_model import search_user, user_join_challenge
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client.jungle7
@@ -43,6 +44,8 @@ def generate_challenge():
     }
 
     challenge_id = db.challenges.insert_one(challenge).inserted_id
+    user_join_challenge(ObjectId(challenge_id))
+
     return jsonify({"result": "success", "challenge_id": str(challenge_id)})
 
 
@@ -112,8 +115,11 @@ def join_challenge():
     data = request.json
 
     # 본문의 챌린지 id
-    challenge_id = data.get("challenge_id")
-    my_id = request.cookies.get("user_id")
+    challenge_id = ObjectId(data.get("challenge_id"))
+    my_id = ObjectId(request.cookies.get("user_id"))
+
+    print(type(my_id), my_id)  
+    print(type(challenge_id), challenge_id)
 
     # 사용자 정보 조회, 데이터 생성
     participant_data = find_user_data(my_id)
@@ -123,12 +129,16 @@ def join_challenge():
         {"_id": ObjectId(challenge_id)}, {"$push": {"participants": participant_data}}
     )
 
+    # user 컬렉션에 데이터 push
+    user_result = users.update_one(
+        {'_id': ObjectId(my_id)}, {'$push':{'joined_challenges': challenge_id}}
+    )
+
     # result 결과 데이터 push(수정 카운트 여부)가 제대로 성공했는지 확인 후 결과출력
-    if result.modified_count > 0:
+    if result.modified_count > 0 and user_result.modified_count > 0:
         return jsonify({"result": "success"})
     else:
         return jsonify({"result": "fail"}), 400
-
 
 # 챌린지 포기 기능
 @challenge_routes.route("/api/challenge/abandon", methods=["POST"])
@@ -137,12 +147,24 @@ def abandon_challenge():
     challenge_id = data.get("challenge_id")
     my_id = request.cookies.get("user_id")
 
+    print(f"🔥 챌린지 포기 요청: user_id={my_id}, challenge_id={challenge_id}")
+
+    # 챌린지 컬렉션에서 참가자 제거
     result = challenges.update_one(
         {"_id": ObjectId(challenge_id)},
         {"$pull": {"participants": {"participant_id": my_id}}},
     )
-    return jsonify({"result": "success"})
+    print(f"🟢 챌린지에서 사용자 제거 완료: {result.matched_count}개 문서 수정됨")
 
+    # 사용자의 joined_challenges 배열에서 해당 챌린지 제거
+    user_result = users.update_one(
+        {"_id": ObjectId(my_id)},
+        {"$pull": {"joined_challenges": {"challenge_id": {"$in": [ObjectId(challenge_id), challenge_id]}}}},  
+    )
+
+    print(f"🔵 유저 컬렉션 업데이트 결과: {user_result.matched_count}개 문서 수정됨")
+
+    return jsonify({"result": "success"})
 
 # 사용자 참여 챌린지 목록 조회 기능
 @challenge_routes.route("/mypage")
@@ -160,6 +182,7 @@ def get_user_challenges():
         return render_template("my_chal.html", challenges=[])
 
     challenges_data = []
+    challenge_info = None
 
     # challenge name과 참여 인원 수집
     for challenge in joined_challenges["joined_challenges"]:
@@ -167,6 +190,7 @@ def get_user_challenges():
             {"_id": ObjectId(challenge["challenge_id"])}
         )
         if challenge_info:
+            print(challenge_info)
             challenges_data.append(
                 {
                     "name": challenge_info["name"],
@@ -178,58 +202,78 @@ def get_user_challenges():
 
 
 # (회원 메인 페이지 상단) 본인 참여 챌린지 목록
-@challenge_routes.route("/", methods=["GET"])
+@challenge_routes.route("/")
 # 사용자 user_id 가져오기
 def get_challenges():
     user_id = request.cookies.get("user_id")
 
     # 사용자가 참여 중인 챌린지 목록 가져오기
-    joined_challenges = db.users.find_one(
+    user_data = db.users.find_one(
         {"_id": ObjectId(user_id)}, {"joined_challenges": 1}
     )
 
     # 참여 중인 챌린지가 없는 경우 null data를 index.html로 render해서 challenges로 보냄
-    if not joined_challenges or "joined_challenges" not in joined_challenges:
+    if not user_data or "joined_challenges" not in user_data:
         return render_template("index.html", challenges=[])
 
+    joined_challenges = user_data["joined_challenges"]
     challenges_data = []
+
     # challenge name과 진행기간 수집
-    for challenge in joined_challenges["joined_challenges"]:
-        challenge_info = db.challenges.find_one(
-            {"_id": ObjectId(challenge["challenge_id"])}
-        )
+    for challenge in joined_challenges:
+        challenge_id = challenge.get("challenge_id") if isinstance(challenge, dict) else challenge
+        # challenge_info = db.challenges.find_one({"_id": challenge_id})
+        print("=======challenge_id",challenge_id)
+
+        # challenge_id가 존재하면 ObjectId로 변환
+        if isinstance(challenge_id, str):
+            challenge_id = ObjectId(challenge_id)
+
+        challenge_info = db.challenges.find_one({"_id": challenge_id})
+        print("=======challenge_info", challenge_info)
+
         if challenge_info:
             # 해당 챌린지의 participants 리스트에서 현재 사용자 찾기
             participant = next(
-                (
-                    p
-                    for p in challenge_info["participants"]
-                    if p["participant_id"] == user_id
-                ),
+                (p for p in challenge_info.get("participants", []) if p["participant_id"] == user_id),
                 None,
             )
 
+            # 사용자 인증 횟수 가져오기 (없으면 0)
+            verification_count = participant["verification_count"] if participant else 0
+
             challenges_data.append(
                 {
+                    'id': challenge_info["_id"],
                     "name": challenge_info["name"],
-                    "verification_count": (
-                        participant["verification_count"] if participant else 0
-                    ),
                     "duration": challenge_info["duration"],
+                    "verification_count": verification_count,
                 }
             )
 
     # 최신 참여 챌린지 3개만 선택 (최근 것이 리스트 마지막에 있으므로 뒤에서 3개 추출)
     challenges_data = sorted(challenges_data, key=lambda x: x["name"], reverse=True)[:3]
 
+    # 3개 이상이면 3개까지만 출력, 3개 미만이면 전부 출력
+    if len(challenges_data) > 3:
+        challenges_data = challenges_data[:3]
+
+    print("🤍",challenges_data)
     # 전체 챌린지 중 4개만 가져오기
-    all_challenges = list(challenges.find().sort("start_date", -1).limit(4))
+    all_challenges = list(db.challenges.find().sort("start_date", -1).limit(4))
     for challenge in all_challenges:
         challenge["_id"] = str(challenge["_id"])  # ObjectId를 문자열로 변환
 
+
+    user_id = request.cookies.get("user_id")
+    user = search_user(user_id)
+    
+    name = user.get("name") if user else "Guest"
+
     return render_template(
-        "index.html", challenges=challenges_data, all_challenges=all_challenges
+        "index.html", challenges=challenges_data, all_challenges=all_challenges, user_name=name
     )
+
 
 #  -- 이미지 파일 업로드 세팅 --
 UPLOAD_FOLDER = "static/challenges" # 프로필 사진을 업로드할 폴더 지정

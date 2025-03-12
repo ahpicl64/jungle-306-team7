@@ -1,11 +1,10 @@
 import datetime
 import os
 import uuid
-from bson import ObjectId
-from flask import Blueprint, request, jsonify, make_response
-from flask_jwt_extended import create_access_token, set_access_cookies
+from flask import Blueprint, request, jsonify, render_template
+from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
-from models.user_model import create_user, get_user_by_email, find_user, join_challenge, search_user
+from models.user_model import create_user, get_user_by_email, find_user, search_user
 
 auth_routes = Blueprint('auth', __name__)  # 블루프린트 생성
 
@@ -23,7 +22,6 @@ def signin_proc():
         return jsonify({
             'result': "success",
             'access_token': access_token,
-            'name': user_info['name'],
             'user_id': str(user_info['_id'])
         })
     
@@ -74,13 +72,13 @@ def signup_proc():
     return jsonify({"result": "success", "user_id": str(user_id)})
 
 # === 참여한 챌린지 추가 API ===
-@auth_routes.route("/api/user-challenge/join", methods=['POST'])
-# @jwt_required()
-def join_challenge_proc():
-    challenge_id = request.json.get('challenge_id')
+# @auth_routes.route("/api/user-challenge/join", methods=['POST'])
+# # @jwt_required()
+# def join_challenge_proc():
+#     challenge_id = request.json.get('challenge_id')
     
-    if challenge_id and join_challenge(challenge_id):
-        return jsonify({"result": "success", "message": "챌린지 참여 완료!"})
+#     if challenge_id and join_challenge(challenge_id):
+#         return jsonify({"result": "success", "message": "챌린지 참여 완료!"})
 
 # === 유저의 id를 받으면 유저 이름을 반환하는 함수 ===
 @auth_routes.route("/api/user/<user_id>", methods=['GET'])
@@ -92,3 +90,14 @@ def get_user_info(user_id):
         return jsonify({"result": "success", "name": user.get("name", "알 수 없음")})
     else:
         return jsonify({"result": "fail", "message": "사용자를 찾을 수 없습니다."}), 404
+    
+
+# @auth_routes.route("/")
+# def get_name():
+#     user_id = request.cookies.get("user_id")
+#     print("======== user_id",user_id)
+#     user = search_user(user_id)
+    
+#     name = user.get("name") if user else "Guest"
+
+#     return render_template("index.html", user_name=name)

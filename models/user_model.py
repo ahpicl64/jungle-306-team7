@@ -38,7 +38,7 @@ def find_user(email, password):
       return None # 로그인 실패 시 None 반환
 
 # 접속 유저에 해당 challenge 추가
-def join_challenge(challenge_id):
+def user_join_challenge(challenge_id):
     # 1. 쿠키에서 user_id 가져오기
     user_id = request.cookies.get("user_id")
     if not user_id:
