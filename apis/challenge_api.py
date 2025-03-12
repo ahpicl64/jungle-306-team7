@@ -64,3 +64,4 @@ def detail(id):
     
     # id가 일치하는 challenge를 detail.html로 render해서 challenge로 보냄
     return render_template("chal_detail.html", challenge=challenge)
+
