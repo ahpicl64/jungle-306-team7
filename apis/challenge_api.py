@@ -7,8 +7,6 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client.jungle7
 user_collection = db.user
 challenges = db.challenges  # 챌린지 컬렉션
-participants_list = challenges.participants
-my_id = request.cookies.get("user_id")
 challenge_routes = Blueprint("challenge", __name__)  # 블루프린트 생성
 
 
@@ -25,7 +23,7 @@ def generate_challenge():
 
     duration = get_duration(start_date_receive, end_date_receive)
 
-    host_user_id = my_id
+    host_user_id = request.cookies.get("user_id")
 
     # 챌린지 추최자의 정보 획득
     participant_data = find_user_data(host_user_id)
@@ -76,8 +74,10 @@ def detail(id):
     return render_template("chal_detail.html", challenge=challenge)
 
 # 참가자 목록과 사용자 id를 대조하여 챌린지 참가여부 검증 기능
-# def check_participation(user_id)
-#     challenges.participants_list.find_one({"participant_id": })
+def check_participation(user_id):
+    result = challenges.find_one({"participant.participant_id": user_id})
+    return bool(result)
+    
 
 # 유저 id 참조, 데이터(이름, 프로필 사진) 조회하는 기능
 def find_user_data(id):
@@ -105,13 +105,15 @@ def join_challenge():
 
     # 본문의 챌린지 id
     challenge_id = data.get("challenge_id")
+    my_id = request.cookies.get("user_id")
 
     # 사용자 정보 조회, 데이터 생성
     participant_data = find_user_data(my_id)
 
     # challenge 컬렉션에 데이터 push
-    result = db.challenge.update_one(
-        {"_id": ObjectId(challenge_id)}, {"$push": {"participants": participant_data}}
+    result = challenges.update_one(
+        {"_id": ObjectId(challenge_id)}, 
+        {"$push": {"participants": participant_data}}
     )
 
     # result 결과 데이터 push(수정 카운트 여부)가 제대로 성공했는지 확인 후 결과출력
