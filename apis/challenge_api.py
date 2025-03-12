@@ -103,3 +103,30 @@ def join_challenge():
     participant_data = find_user_data(user_id)
     if not participant_data:
         return jsonify
+    
+
+#사용자의 참여 중인 챌린지 목록 조회 기능
+@challenge_routes.route("/mypage")
+#사용자의 user_id 가져오기
+def get_user_challenges():
+    user_id = request.cookies.get("user_id")
+
+    #사용자가 참여 중인 챌린지 목록 가져오기
+    joined_challenges = db.users.find_one({"_id":ObjectId(user_id)}, {"joined_challenges":1})
+
+    #참여 중인 챌린지가 없는 경우 null data를 my_chal.html로 render해서 challenges로 보냄냄
+    if not joined_challenges or "joined_challenges" not in joined_challenges:
+        return render_template("my_chal.html",challenges=[])
+    
+    challenges_data = []
+
+    #challenge name과 참여 인원 수집집
+    for challenge in joined_challenges["joined_challenges"]:
+        challenge_info = db.challenges.find_one({"_id":ObjectId(challenge["challenge_id"])})
+        if challenge_info:
+            challenges_data.append({
+                "name":challenge_info["name"],
+                "participant_count":len(challenge_info["participants"])
+            })
+    #challenge name과 participant_count를 my_chal.html로 render해서 challenges로 보냄
+    return render_template("my_chal.html",challenges=challenges_data)

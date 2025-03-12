@@ -43,15 +43,17 @@
                 </button>
                나의 챌린지 목록
             </div>
+
             <!-- 챌린지 목록 카드 -->
             <div class="row gx-2 gy-3">
+                {% for challenge in challenges %}
                 <!-- 첫 번째 카드 -->
                 <div class="col-6 col-md-6">
                     <div class="border p-3 rounded" style="background-color: #4ade80; height: 120px;">
                         <!-- 제목과 인원 -->
                         <div class="d-grid">
-                            <h2 class="fs-6 fw-bold">챌린지 제목 1</h2>
-                            <p class="text-white">00명 참여 중</p>
+                            <h2 class="fs-6 fw-bold">{{ challenge.name}}</h2>
+                            <p class="text-white">{{challenge.participant_count}}명 참여 중</p>
                         </div>
                         <!-- 사용자 프로필 사진 -->
                         <div class="d-flex justify-content-center align-items-center gap-3">
@@ -64,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
 
                 <!-- 두 번째 카드 -->
                 <div class="col-6 col-md-6">
