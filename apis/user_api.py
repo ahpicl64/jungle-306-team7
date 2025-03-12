@@ -18,21 +18,14 @@ def signin_proc():
 
     if user_info:
         access_token = create_access_token(identity=str(user_info['_id']), expires_delta=datetime.timedelta(hours=2)) # 만료 시간(2시간 후)
-        
-        response = make_response(jsonify({
+
+        return jsonify({
             'result': "success",
+            'access_token': access_token,
             'name': user_info['name'],
             'user_id': str(user_info['_id'])
-        }))
-
-        set_access_cookies(response, access_token)
-        return response
-        # return jsonify({
-        #     'result': "success",
-        #     'access_token': access_token,
-        #     'name': user_info['name'],
-        #     'user_id': str(user_info['_id'])
-        # })
+        })
+    
     else:
         return jsonify({'result': "failure"})
 

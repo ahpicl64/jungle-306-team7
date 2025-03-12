@@ -64,9 +64,9 @@
               expirationDate.setHours(expirationDate.getHours() + 2);
               expirationDate = expirationDate.toUTCString(); // 2시간 이후에 토큰 만료
 
-              document.cookie = `access_token=${response.access_token}; expires=${expirationDate}; path=/; Secure`;
-              document.cookie = `name=${response.name}; expires=${expirationDate}; path=/; Secure`;
-              document.cookie = `user_id=${response.user_id}; expires=${expirationDate}; path=/; Secure`;
+              document.cookie = `access_token=${response.access_token}; expires=${expirationDate}; path=/;`;
+              document.cookie = `name=${response.name}; expires=${expirationDate}; path=/;`;
+              document.cookie = `user_id=${response.user_id}; expires=${expirationDate}; path=/;`;
 
               // 메인 페이지 이동
               window.location.href = "/";
@@ -77,9 +77,10 @@
         });
       }
 
-      function signup(){//회원가입 페이지로 이동
-        
-        window.location.href="/signup"
+      function signup() {
+        //회원가입 페이지로 이동
+
+        window.location.href = "/signup";
       }
     </script>
   </head>
@@ -113,11 +114,9 @@
           로그인
         </button>
         <!-- 회원가입 버튼 -->
-        <button
-        onclick="signup()" 
-        class="w-fit text-sm border-b pt-4">
-        회원가입 하러가기
-      </button>
+        <button onclick="signup()" class="w-fit text-sm border-b pt-4">
+          회원가입 하러가기
+        </button>
       </div>
     </div>
   </body>
