@@ -36,6 +36,10 @@
     />
     <title>커피챌</title>
     <script>
+      //챌린지 상세 페이지로 넘어가는 함수
+      function gotodetail(id) {
+                window.location.href = `/challenge/${id}`
+      }
       //챌린지 생성 페이지로 넘어가는 함수
       function generate_chal() {
 
@@ -104,12 +108,12 @@
       <br />
 
       <div id="user-status">
-        {% if challenges %}
         <!--회원이 참여 중인 챌린지 목록 문구-->
         <div class="d-flex w-100 fw-semibold px-2 mb-4">
           <span id="user-name">길동</span>님이 참여 중인 챌린지
         </div>
-
+        
+        {% if challenges %}
         <!-- 참여 중인 챌린지 목록 -->
         <div class="px-2 d-flex flex-column gap-3">
           {% for challenge in challenges %}
@@ -137,7 +141,8 @@
           
 
           <!--더보기 버튼(3개 이상일 때만 보이게 설정)-->
-          {% if challenges|length >= 3 %}
+          {% if 
+             challenges|length >= 3 %}
           <div class="d-flex justify-content-end">
             <button
               type="button"
@@ -172,7 +177,7 @@
         <div class="row gx-2 gy-3">
           {% for challenge in all_challenges %}
           <!-- 첫 번째 카드 -->
-          <div class="col-6 col-md-6">
+          <div class="col-6 col-md-6 " onclick="gotodetail('{{challenge._id}}')">
             <div
               class="border p-3 rounded"
               style="background-color: #4ade80; height: 120px"
@@ -180,7 +185,7 @@
               <!-- 제목과 인원 -->
               <div class="d-grid">
                 <h2 class="fs-6 fw-bold">{{challenge.name}}</h2>
-                <p class="text-muted">{{ challenge.participants or [] | length }}명 참여 중</p>
+                <p class="text-white">{{ challenge.participants | length }}명 참여 중</p>
               </div>
               <!-- 사용자 프로필 사진 -->
               <div class="d-flex align-items-center gap-3">

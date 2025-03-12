@@ -28,9 +28,7 @@
 
 
     <script>
-        function goBack(){
-            window.location.href="{previous_url}";
-        }
+      
 
         // 회원가입 핸들러
         function generateChallenge() {
@@ -64,7 +62,7 @@
                     alert("챌린지 생성이 완료되었습니다.")
                     // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
                     console.log(response);
-                    let challenge_id = response['challenge_id']
+                    window.location.href = "/challenge/" + response.challenge_id
 
                     // 2. 생성이 완료되면 유저 컬렉션에 챌린지 추가 요청
                     $.ajax({

@@ -36,15 +36,15 @@
 
   <body>
     <div class="flex flex-col py-7 px-6 h-screen">
-      <!-- 챌린지 헤드라인 -->
-      <div class="mb-12 text-xl font-semibold">
-        <button class="mr-3" type="button" onclick="main()">
-          <span>
-            <i class="fa-solid fa-chevron-left" a="index.html"></i>
-          </span>
-        </button>
-        {{challenge.name}}
-      </div>
+        <!-- 챌린지 헤드라인 -->
+        <div class="mb-12 text-xl font-semibold">
+            <button class="mr-3" type="button" onclick="history.back()">
+                <span>
+                    <i class="fa-solid fa-chevron-left" a="index.html"></i>
+                </span>
+            </button>
+            {{challenge.name}}
+        </div>
 
       <!-- 챌린지 정보 -->
       <div class="px-3 flex flex-col gap-2">
@@ -138,14 +138,24 @@
       >
         인증하기
       </button>
-      <button
-        class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg"
-      >
-        포기하기
+      <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg" onclick="abandon_challenge()">
+          포기하기
       </button>
     </div>
 
-    <!-- 인증 모달 -->
+    <!-- 참여중이 아닐경우 참여하기 버튼 노출 -->
+    {% else %}
+    <div class="fixed bottom-5 w-full flex flex-col items-center">
+      <button
+        class="bg-green-400 rounded-[10px] w-52 h-13 text-lg"
+        onclick="join_challenge()"
+      >
+        참여하기
+      </button>
+    </div>
+    {% endif %}
+
+    <!-- 챌린지 인증하기 모달(default: hidden) -->
     <div
       id="verificationModal"
       class="fixed inset-0 flex items-center justify-center bg-black/50 hidden"
@@ -185,32 +195,19 @@
           </button>
         </div>
       </div>
-    </div>
-
-    <!-- 참여중이 아닐경우 참여하기 버튼 노출 -->
-    {% else %}
-    <div class="fixed bottom-5 w-full flex flex-col items-center">
-      <button
-        class="bg-green-400 rounded-[10px] w-52 h-13 text-lg"
-        onclick="join_challenge()"
-      >
-        참여하기
-      </button>
-    </div>
-    {% endif %}
 
     <script>
-      // 모달 열기
+      // 인증 모달 열기
       function openModal() {
         document.getElementById("verificationModal").classList.remove("hidden");
       }
 
-      // 모달 닫기
+      // 인증 모달 닫기
       function closeModal() {
         document.getElementById("verificationModal").classList.add("hidden");
       }
 
-      // 이미지 미리보기 기능
+      // 인증 모달 이미지 미리보기 기능
       function previewImage() {
         let file = document.getElementById("fileInput").files[0];
         let preview = document.getElementById("imagePreview");
@@ -255,28 +252,6 @@
         window.location.href = "/";
       }
 
-      //참가하기 기능
-      function join_challenge() {
-        let challenge_id = "{{ challenge._id }}";
-
-        $.ajax({
-          type: "POST",
-          url: "/api/challenge/join",
-          contentType: "application/json",
-          data: JSON.stringify({
-            challenge_id: challenge_id,
-          }),
-          success: function (response) {
-            if (response["result"] == "success") {
-              alert("참여 완료!");
-              window.location.reload();
-            } else {
-              alert("참여 실패");
-            }
-          },
-        });
-      }
-
       // 인증 요청 API
       function verification_challenge() {
         let formData = new FormData();
@@ -314,6 +289,51 @@
           },
         });
       }
+      
+
+        //참가하기 기능
+        function join_challenge() {
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/join",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id}),
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("참여 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("오류 발생, 참여 실패")
+                    }
+                }
+            })
+        }
+
+        //포기하기 기능
+        function abandon_challenge() {
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/abandon",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id
+                }),
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("포기 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("오류 발생, 포기 실패")
+                    }
+                }
+            })
+        }
+
     </script>
   </body>
 </html>
