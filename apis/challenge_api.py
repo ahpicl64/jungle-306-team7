@@ -230,8 +230,6 @@ def get_challenges():
         "index.html", challenges=challenges_data, all_challenges=all_challenges
     )
 
-    return render_template("index.html", challenges=challenges_data,all_challenges=all_challenges)
-
 #  -- 이미지 파일 업로드 세팅 --
 UPLOAD_FOLDER = "static/challenge" # 프로필 사진을 업로드할 폴더 지정
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"} # 허용할 파일 확장자
