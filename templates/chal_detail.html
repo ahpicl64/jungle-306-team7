@@ -28,7 +28,7 @@
     <div class="flex flex-col py-7 px-6 h-screen">
         <!-- 챌린지 헤드라인 -->
         <div class="mb-12 text-xl font-semibold">
-            <button class="mr-3" type="button" onclick="main()">
+            <button class="mr-3" type="button" onclick="history.back()">
                 <span>
                     <i class="fa-solid fa-chevron-left" a="index.html"></i>
                 </span>
@@ -146,11 +146,7 @@
             });
         });
 
-        
-        //메인 페이지로 이동
-        function main() {
-            window.location.href = "/";
-        }
+      
 
         //참가하기 기능
         function join_challenge() {
