@@ -42,7 +42,7 @@
             let verification_method = $("#verification_method").val();
             let bet_required = $("#bet_required").is(":checked");
 
-            // 생성 요청
+            // 1. 생성 요청
             $.ajax({
                 type: "POST",
                 url: "/api/challenge",
@@ -55,14 +55,48 @@
                     verification_method: verification_method, 
                     bet_required: bet_required,
                 }), // JSON 변환
-                success: function (response){
-                    if (response["result"] == "success"){
-                        alert("챌린지 생성이 완료되었습니다.")
-                        // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
-                        console.log(response);
-                    }
-                }
-            })
+            //     success: function (response){
+            //         if (response["result"] == "success"){
+            //             alert("챌린지 생성이 완료되었습니다.")
+            //             // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
+            //             console.log(response);
+            //         }
+            //     }
+            // })
+            }).done(function(response){
+                // 1-1. 챌린지 생성 요청이 성공하였을 때
+                if (response["result"] == "success"){
+                    alert("챌린지 생성이 완료되었습니다.")
+                    // 완성된 챌린지의 세부페이지로 이동하도록 기능 추가
+                    console.log(response);
+                    let challenge_id = response['challenge_id']
+
+                    // 2. 생성이 완료되면 유저 컬렉션에 챌린지 추가 요청
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/user-challenge/join",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            challenge_id: challenge_id
+                        })}).done(function(response){
+                            // 2-1. 유저 컬렉션에 추가를 성공하였을 때
+                            if (response["result"] == "success"){
+                                console.log('유저 컬렉션 챌린지 업데이트 성공');
+                            } else{
+                            // 2-2. 유저 컬렉션 추가 요청이 fail 응답일 경우
+                                alert('챌린지 참여 중 오류가 발생했습니다.')
+                            }
+                        }).fail(function(){
+                            // 2-3. 유저 컬렉션 추가 요청에 실패하였을 경우
+                            alert('챌린지 참여 중 오류가 발생했습니다.')
+                        })
+                } else {
+                    // 1.2. 챌린지 요청에 응답이 fail일 경우
+                    alert('챌린지 생성에 실패했습니다.')
+                }}).fail(function(){
+                    // 1.3. 챌린지 요청에 실패하였을 경우
+                    alert('챌린지 생성에 실패했습니다.')
+                })
         }
 
         // {

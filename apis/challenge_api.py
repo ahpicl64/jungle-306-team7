@@ -34,8 +34,8 @@ def generate_challenge():
         "participants": [],
     }
 
-    db.challenges.insert_one(challenge).inserted_id
-    return jsonify({"result": "success"})
+    challenge_id = db.challenges.insert_one(challenge).inserted_id
+    return jsonify({"result": "success", 'challenge_id': str(challenge_id)})
 
 
 def get_duration(start_date_str, end_date_str):
