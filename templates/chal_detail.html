@@ -111,7 +111,7 @@
         <button class="bg-green-400 rounded-[10px] w-[33%] h-13 text-lg">
             인증하기
         </button>
-        <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg">
+        <button class="bg-gray-800 text-white rounded-[10px] w-[33%] h-13 text-lg" onclick="abandon_challenge()">
             포기하기
         </button>
     </div>
@@ -167,7 +167,29 @@
                         alert("참여 완료!")
                         window.location.reload();
                     } else {
-                        alert("참여 실패")
+                        alert("오류 발생, 참여 실패")
+                    }
+                }
+            })
+        }
+
+        //포기하기 기능
+        function abandon_challenge() {
+            let challenge_id = "{{ challenge._id }}"
+
+            $.ajax({
+                type: "POST",
+                url: "/api/challenge/abandon",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challenge_id: challenge_id
+                }),
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert("포기 완료!")
+                        window.location.reload();
+                    } else {
+                        alert("오류 발생, 포기 실패")
                     }
                 }
             })

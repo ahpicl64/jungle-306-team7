@@ -126,6 +126,20 @@ def join_challenge():
         return jsonify({"result": "fail"}), 400
     
 
+# 챌린지 포기 기능
+@challenge_routes.route("/api/challenge/abandon", methods=["POST"])
+def abandon_challenge():
+    data = request.json  # 파싱
+    challenge_id = data.get("challenge_id")
+    my_id = request.cookies.get("user_id")
+
+    result = challenges.update_one(
+        {"_id": ObjectId(challenge_id)},
+        {"$pull": {"participants": {"participant_id": my_id}}}
+    )
+    return jsonify({"result": "success"})
+    
+
 #사용자 참여 챌린지 목록 조회 기능
 @challenge_routes.route("/mypage")
 #사용자의 user_id 가져오기
@@ -171,11 +185,11 @@ def get_challenges():
         challenge_info = db.challenges.find_one({"_id":ObjectId(challenge["challenge_id"])})
         if challenge_info:
              # 해당 챌린지의 participants 리스트에서 현재 사용자 찾기
-            participant = next((p for p in challenge_info["participants"] if p["user_id"] == user_id), None)
+            participant = next((p for p in challenge_info["participants"] if p["participant_id"] == user_id), None)
 
             challenges_data.append({
                 "name":challenge_info["name"],
-                "count": participant["count"] if participant else 0,
+                "verification_count": participant["verification_count"] if participant else 0,
                 "duration": challenge_info["duration"]
             })
 
@@ -188,4 +202,3 @@ def get_challenges():
         challenge["_id"] = str(challenge["_id"])  # ObjectId를 문자열로 변환
 
     return render_template("index.html", challenges=challenges_data,all_challenges=all_challenges)
-

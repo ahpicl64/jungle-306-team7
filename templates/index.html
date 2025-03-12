@@ -104,12 +104,12 @@
       <br />
 
       <div id="user-status">
-        {% if challenges %}
         <!--회원이 참여 중인 챌린지 목록 문구-->
         <div class="d-flex w-100 fw-semibold px-2 mb-4">
           <span id="user-name">길동</span>님이 참여 중인 챌린지
         </div>
-
+        
+        {% if challenges %}
         <!-- 참여 중인 챌린지 목록 -->
         <div class="px-2 d-flex flex-column gap-3">
           {% for challenge in challenges %}
