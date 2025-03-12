@@ -186,5 +186,10 @@ def get_challenges():
     # 최신 참여 챌린지 3개만 선택 (최근 것이 리스트 마지막에 있으므로 뒤에서 3개 추출)
     challenges_data = sorted(challenges_data, key=lambda x: x["name"], reverse=True)[:3]
 
-    return render_template("index.html", challenges=challenges_data)
+    #전체 챌린지 중 4개만 가져오기
+    all_challenges = list(challenges.find().sort("start_date", -1).limit(4))
+    for challenge in all_challenges:
+        challenge["_id"] = str(challenge["_id"])  # ObjectId를 문자열로 변환
+
+    return render_template("index.html", challenges=challenges_data,all_challenges=all_challenges)
 
