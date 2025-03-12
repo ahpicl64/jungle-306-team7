@@ -145,7 +145,7 @@ def get_user_challenges():
     
     challenges_data = []
 
-    #challenge name과 참여 인원 수집집
+    #challenge name과 참여 인원 수집
     for challenge in joined_challenges["joined_challenges"]:
         challenge_info = db.challenges.find_one({"_id":ObjectId(challenge["challenge_id"])})
         if challenge_info:
@@ -155,3 +155,36 @@ def get_user_challenges():
             })
     #challenge name과 participant_count를 my_chal.html로 render해서 challenges로 보냄
     return render_template("my_chal.html",challenges=challenges_data)
+
+#(회원 메인 페이지 상단) 본인 참여 챌린지 목록
+@challenge_routes.route("/",methods=['GET'])
+#사용자 user_id 가져오기
+def get_challenges():
+    user_id = request.cookies.get("user_id")
+
+    #사용자가 참여 중인 챌린지 목록 가져오기
+    joined_challenges = db.users.find_one({"_id":ObjectId(user_id)}, {"joined_challenges":1})
+
+    #참여 중인 챌린지가 없는 경우 null data를 index.html로 render해서 challenges로 보냄
+    if not joined_challenges or "joined_challenges" not in joined_challenges:
+        return render_template("index.html",challenges=[])
+    
+    challenges_data=[]
+    #challenge name과 진행기간 수집
+    for challenge in joined_challenges["joined_challenges"]:
+        challenge_info = db.challenges.find_one({"_id":ObjectId(challenge["challenge_id"])})
+        if challenge_info:
+             # 해당 챌린지의 participants 리스트에서 현재 사용자 찾기
+            participant = next((p for p in challenge_info["participants"] if p["user_id"] == user_id), None)
+
+            challenges_data.append({
+                "name":challenge_info["name"],
+                "count": participant["count"] if participant else 0,
+                "duration": challenge_info["duration"]
+            })
+
+    # 최신 참여 챌린지 3개만 선택 (최근 것이 리스트 마지막에 있으므로 뒤에서 3개 추출)
+    challenges_data = sorted(challenges_data, key=lambda x: x["name"], reverse=True)[:3]
+
+    return render_template("index.html", challenges=challenges_data)
+

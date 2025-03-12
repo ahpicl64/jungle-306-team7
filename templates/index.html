@@ -93,11 +93,13 @@
 
   <body>
     <div class="d-flex flex-column py-3 px-4 vh-100">
+      
       <!--페이지 제목-->
       <div class="fs-5 mb-4 fw-semibold">커피챌</div>
       <br />
 
       <div id="user-status">
+        {% if challenges %}
         <!--회원이 참여 중인 챌린지 목록 문구-->
         <div class="d-flex w-100 fw-semibold px-2 mb-4">
           <span id="user-name">길동</span>님이 참여 중인 챌린지
@@ -105,14 +107,15 @@
 
         <!-- 참여 중인 챌린지 목록 -->
         <div class="px-2 d-flex flex-column gap-3">
+          {% for challenge in challenges %}
           <div
             class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
             style="border-color: #4ade80 !important; width: 100%"
           >
             <!-- 왼쪽: 챌린지 제목 & 진행률 -->
             <div class="d-flex align-items-center gap-2">
-              <p class="mb-0">매일 기술 블로그 쓰기</p>
-              <p class="text-muted fs-6 mb-0">3/7</p>
+              <p class="mb-0">{{ challenge.name }}</p>
+              <p class="text-muted fs-6 mb-0">{{challenge.count}}/{{challenge.duration}}</p>
             </div>
 
             <!-- 오른쪽: 인증 버튼 -->
@@ -123,46 +126,13 @@
               인증하러 가기
             </button>
           </div>
+          {% endfor %}
+          
 
-          <div
-            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-            style="border-color: #4ade80 !important; width: 100%"
-          >
-            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-            <div class="d-flex align-items-center gap-2">
-              <p class="mb-0">매일 기술 블로그 쓰기</p>
-              <p class="text-muted fs-6 mb-0">3/7</p>
-            </div>
+          
 
-            <!-- 오른쪽: 인증 버튼 -->
-            <button
-              class="btn text-white px-2 py-2 rounded-pill small"
-              style="background-color: #4ade80"
-            >
-              인증하러 가기
-            </button>
-          </div>
-
-          <div
-            class="d-flex align-items-center justify-content-between gap-3 p-2 bg-white border border-3 rounded"
-            style="border-color: #4ade80 !important; width: 100%"
-          >
-            <!-- 왼쪽: 챌린지 제목 & 진행률 -->
-            <div class="d-flex align-items-center gap-2">
-              <p class="mb-0">매일 기술 블로그 쓰기</p>
-              <p class="text-muted fs-6 mb-0">3/7</p>
-            </div>
-
-            <!-- 오른쪽: 인증 버튼 -->
-            <button
-              class="btn text-white px-2 py-2 rounded-pill small"
-              style="background-color: #4ade80"
-            >
-              인증하러 가기
-            </button>
-          </div>
-
-          <!--더보기 버튼-->
+          <!--더보기 버튼(3개 이상일 때만 보이게 설정)-->
+          {% if challenges|length >= 3 %}
           <div class="d-flex justify-content-end">
             <button
               type="button"
@@ -173,7 +143,15 @@
               더보기
             </button>
           </div>
+          {% endif %}
         </div>
+
+        {% else %}
+        <!--챌린지가 없을 때-->
+        <div class="d-flex flex-column w-100 text-center mt-4">
+          <p class="fs-5 text-muted">참여 중인 챌린지가 없습니다.</p>
+        </div>
+        {% endif %}
       </div>
 
       <br />
