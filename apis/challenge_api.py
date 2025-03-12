@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import uuid
 from flask import Blueprint, Flask, render_template, jsonify, request
 from bson import ObjectId
 from pymongo import MongoClient
@@ -231,7 +232,7 @@ def get_challenges():
     )
 
 #  -- 이미지 파일 업로드 세팅 --
-UPLOAD_FOLDER = "static/challenge" # 프로필 사진을 업로드할 폴더 지정
+UPLOAD_FOLDER = "static/challenges" # 프로필 사진을 업로드할 폴더 지정
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"} # 허용할 파일 확장자
 
 # 폴더가 없으면 생성
@@ -273,17 +274,24 @@ def verificate_challenge():
 
     # 인증 사진 이미지 처리
     challenge_image = request.files.get("challenge_image")
-
     if challenge_image and allowed_file(challenge_image.filename):
-        file_path = os.path.join(UPLOAD_FOLDER, challenge_image.filename)
+        # 파일 확장자 추출
+        ext = challenge_image.filename.rsplit(".", 1)[-1]
+    
+        # 랜덤한 파일명 생성 (UUID 사용) -> 한글 제거
+        filename = f"{uuid.uuid4().hex}.{ext}"
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+        # 파일 저장
         challenge_image.save(file_path)
+        db_path = f'/static/challenges/{filename}'
 
     # MongoDB 업데이트 (count 증가, 인증 정보 추가)
     result = challenges.update_one(
         {"_id": ObjectId(challenge_id), "participants.participant_id": user_id},  # 해당 유저의 데이터 찾기
         {
             "$inc": {"participants.$.verification_count": 1},  # count 1 증가
-            "$push": {"participants.$.verification_image": {"photo_url": file_path, "date": today_date}}
+            "$push": {"participants.$.verification_image": {"photo_url": db_path, "date": today_date}}
         }
     )
 

@@ -1,5 +1,6 @@
 import datetime
 import os
+import uuid
 from bson import ObjectId
 from flask import Blueprint, request, jsonify, make_response
 from flask_jwt_extended import create_access_token, set_access_cookies
@@ -30,7 +31,7 @@ def signin_proc():
         return jsonify({'result': "failure"})
 
 
-UPLOAD_FOLDER = "static/profile" # 프로필 사진을 업로드할 폴더 지정
+UPLOAD_FOLDER = "static/profiles" # 프로필 사진을 업로드할 폴더 지정
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"} # 허용할 파일 확장자
 
 # 폴더가 없으면 생성
@@ -54,13 +55,21 @@ def signup_proc():
     # 파일 업로드 처리
     profile_image = request.files.get("profile_image")
     if profile_image and allowed_file(profile_image.filename):
-        file_path = os.path.join(UPLOAD_FOLDER, profile_image.filename)
+        # 파일 확장자 추출
+        ext = profile_image.filename.rsplit(".", 1)[-1]
+    
+        # 랜덤한 파일명 생성 (UUID 사용) -> 한글 제거
+        filename = f"{uuid.uuid4().hex}.{ext}"
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+        # 파일 저장
         profile_image.save(file_path)
+        db_path = f'/static/profiles/{filename}'
     else:
-        file_path = "/static/logo.png" # 기본 프로필 이미지
+        db_path = "/static/logo.png" # 기본 프로필 이미지
 
     # 유저 생성 (프로필 이미지 포함)
-    user_id = create_user(name, email, password, file_path)
+    user_id = create_user(name, email, password, db_path)
 
     return jsonify({"result": "success", "user_id": str(user_id)})
 

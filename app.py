@@ -1,7 +1,5 @@
-from ast import Return
-from bson import ObjectId
 from pymongo import MongoClient
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, send_from_directory
 from flask_jwt_extended import JWTManager
 
 # auth 관련 api import
@@ -31,6 +29,15 @@ jwt = JWTManager(app)
 app.register_blueprint(auth_routes)
 # *** 각 import한 api 블루프린트 등록 
 app.register_blueprint(challenge_routes)
+
+# === 이미지 경로 설정 ===
+@app.route('/static/profiles/<path:filename>')
+def uploaded_profile_file(filename):
+    return send_from_directory("static/profiles", filename)
+
+@app.route('/static/challenges/<path:filename>')
+def uploaded_challenges_file(filename):
+    return send_from_directory("static/challenges", filename)
 
 #  === HTML 렌더링 ===
 @app.route('/')
