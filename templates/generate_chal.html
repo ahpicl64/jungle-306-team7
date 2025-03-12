@@ -115,7 +115,7 @@
             <input id="name" class="text-2xl" placeholder="챌린지명을 입력해주세요."></input>
 
             <!-- 기간 -->
-            <div>
+            <div class="my-10">
                 <p>기간</p>
                     시작 날짜 <input id="start_date" type="date">
                     <br>
@@ -127,16 +127,13 @@
             <div class="flex flex-row w-full justify-between items-center">
                 <p>챌린지 세부내용</p>
             </div>
-            <input id="details" class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"
-                placeholder="챌린지 내용을 입력해주세요.">
-            </input>
+            <textarea id="details" placeholder="챌린지 내용을 입력해주세요." class="h-33 px-3 py-3 overflow-y-auto border-1 border-gray-500 rounded-md"></textarea>
 
             <!-- 인증방법 설명 -->
             <div>
                 <p>인증방법</p>
-                <input id="verification_method" class="w-full h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
-                    placeholder="인증 방법을 입력해주세요.">
-                </input>
+                <textarea id="verification_method" class="w-full h-20 overflow-y-auto px-3 py-3 text-left border-1 border-gray-500 rounded-md"
+                placeholder="인증 방법을 입력해주세요." ></textarea>
             </div>
 
             <!-- 커피내기 유무 체크박스 -->
