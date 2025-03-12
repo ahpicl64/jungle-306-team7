@@ -50,3 +50,7 @@ def join_challenge(challenge_id):
         {"$push": {"joined_challenges": {"challenge_id": challenge_id}}}
     )
     return True
+
+# id로 유저 정보를 반환하는 함수
+def search_user(id):
+    return users.find_one({'_id': ObjectId(id)})
