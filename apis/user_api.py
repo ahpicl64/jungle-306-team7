@@ -1,8 +1,9 @@
 import datetime
 import os
 import uuid
-from flask import Blueprint, request, jsonify, render_template
-from flask_jwt_extended import create_access_token
+from bson import ObjectId
+from flask import Blueprint, request, jsonify, make_response
+from flask_jwt_extended import create_access_token, set_access_cookies
 from flask_jwt_extended import jwt_required
 from models.user_model import create_user, get_user_by_email, find_user, search_user
 
@@ -22,6 +23,7 @@ def signin_proc():
         return jsonify({
             'result': "success",
             'access_token': access_token,
+            'name': user_info['name'],
             'user_id': str(user_info['_id'])
         })
     
@@ -90,14 +92,3 @@ def get_user_info(user_id):
         return jsonify({"result": "success", "name": user.get("name", "알 수 없음")})
     else:
         return jsonify({"result": "fail", "message": "사용자를 찾을 수 없습니다."}), 404
-    
-
-# @auth_routes.route("/")
-# def get_name():
-#     user_id = request.cookies.get("user_id")
-#     print("======== user_id",user_id)
-#     user = search_user(user_id)
-    
-#     name = user.get("name") if user else "Guest"
-
-#     return render_template("index.html", user_name=name)

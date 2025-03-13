@@ -1,16 +1,14 @@
+from ast import Return
+from bson import ObjectId
 from pymongo import MongoClient
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_jwt_extended import JWTManager
 
 # auth 관련 api import
 from apis.user_api import auth_routes
 from apis.challenge_api import challenge_routes
 
-
 app = Flask(__name__)
-
-app.jinja_env.auto_reload = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # === MongoDB 설정 ===
 # client = MongoClient('mongodb://jungle7:jungle7@52.79.226.85:27017/jungle7?authSource=admin')
@@ -41,7 +39,6 @@ def uploaded_profile_file(filename):
 @app.route('/static/challenges/<path:filename>')
 def uploaded_challenges_file(filename):
     return send_from_directory("static/challenges", filename)
-
 #  === HTML 렌더링 ===
 @app.route('/')
 def home():
